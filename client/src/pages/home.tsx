@@ -1,25 +1,15 @@
 import { Navigation } from "@/components/Navigation";
-import { Hero } from "@/components/Hero";
-import { Skills } from "@/components/Skills";
-import { Projects } from "@/components/Projects";
-import { Contact } from "@/components/Contact";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-primary/30">
+    <div className="min-h-screen bg-background">
       <Navigation />
-      <main>
-        <Hero />
-        <Skills />
-        <Projects />
-        <Contact />
+      <main className="container mx-auto px-4 py-12">
+        <h1 className="text-4xl font-bold mb-6">Home</h1>
+        <p className="text-muted-foreground leading-relaxed max-w-2xl">
+          Welcome to my portfolio. Use the navigation above to explore my work in embedded systems, sound, and other miscellaneous projects.
+        </p>
       </main>
-      
-      <footer className="py-8 text-center text-muted-foreground border-t border-white/5 bg-black/20">
-        <div className="container mx-auto px-4">
-          <p>© {new Date().getFullYear()} Portfolio. Built with React & Tailwind.</p>
-        </div>
-      </footer>
     </div>
   );
 }
