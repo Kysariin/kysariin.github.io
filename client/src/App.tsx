@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useLocation, Switch, Route } from "wouter";
 import { cn } from "@/lib/utils";
 import { queryClient } from "./lib/queryClient";
@@ -39,7 +40,7 @@ function Navigation() {
   );
 }
 
-function PageLayout({ title, children }: { title: string, children: React.ReactNode }) {
+function PageLayout({ title, children }: { title: React.ReactNode, children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="scanline" />
@@ -66,7 +67,7 @@ function PageLayout({ title, children }: { title: string, children: React.ReactN
 
 function Home() {
   return (
-    <PageLayout title={<>System<br/>Output</> as any}>
+    <PageLayout title={<>System<br/>Output</>}>
       <p>// INITIALIZING INTERFACE...</p>
       <p>// LOADING PROJECT_FILES...</p>
       <p className="mt-4">Creative technologist exploring the fringe of embedded systems and computational sound.</p>
@@ -105,7 +106,7 @@ function NotFound() {
   return (
     <PageLayout title="404">
       <p>// ERROR: PAGE_NOT_FOUND</p>
-      <Link href="/"><a className="mt-4 inline-block text-primary hover:underline">Return to Home</a></Link>
+      <Link href="/"><a className="mt-4 inline-block text-primary hover:underline font-mono">Return to Home</a></Link>
     </PageLayout>
   );
 }
