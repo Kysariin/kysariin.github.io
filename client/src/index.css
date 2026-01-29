@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -54,8 +55,8 @@
     --popover: 240 10% 4%;
     --popover-foreground: 40 10% 95%;
 
-    /* More vibrant primary for visibility */
-    --primary: 260 50% 75%;
+    /* Softer primary: lower saturation, slightly lighter */
+    --primary: 260 35% 78%;
     --primary-foreground: 240 10% 3%;
 
     --secondary: 240 5% 18%;
@@ -92,6 +93,33 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif tracking-tight lowercase text-foreground;
+  }
+}
+
+@layer components {
+  .project-content h2 {
+    @apply text-4xl md:text-5xl font-semibold leading-tight mt-12 mb-6 pb-2 border-b border-border/40;
+  }
+  .project-content h3 {
+    @apply text-3xl md:text-4xl font-semibold leading-snug mt-10 mb-4;
+  }
+  .project-content p {
+    @apply my-6 leading-relaxed text-foreground/90;
+  }
+  .project-content ul {
+    @apply my-5 list-disc pl-6;
+  }
+  .project-content li {
+    @apply my-1.5 marker:text-foreground/80;
+  }
+  .project-content a {
+    @apply text-primary/90 underline decoration-primary/40 decoration-1 underline-offset-2 transition-colors;
+  }
+  .project-content a:hover {
+    @apply text-primary decoration-primary decoration-2 underline-offset-4;
+  }
+  .project-content a:focus-visible {
+    @apply outline-none ring-2 ring-primary/40 rounded-[2px];
   }
 }
 
