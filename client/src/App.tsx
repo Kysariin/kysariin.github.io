@@ -61,7 +61,6 @@ function PageLayout({ title, children }: { title: React.ReactNode, children: Rea
              <div className="h-[1px] w-full bg-border" />
              <div className="flex justify-between py-4 text-[10px] font-mono tracking-widest uppercase text-muted-foreground">
                <span>© {new Date().getFullYear()} portfolio</span>
-               <span>v1.0.42</span>
              </div>
           </footer>
         </article>
