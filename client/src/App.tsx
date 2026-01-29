@@ -3,7 +3,7 @@ import { Link, useLocation, Switch, Route } from "wouter";
 import { cn } from "@/lib/utils";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Linkedin, Instagram } from "lucide-react";
+import { Linkedin, Instagram, Music2 } from "lucide-react";
 import { ProjectEntry } from "@/components/ProjectEntry";
 
 // --- Types ---
@@ -115,13 +115,17 @@ function PageLayout({ title, children }: { title: React.ReactNode, children: Rea
              <div className="flex justify-between items-center py-6 text-[10px] font-mono tracking-widest uppercase text-muted-foreground">
                <span>© {new Date().getFullYear()} portfolio</span>
                <div className="flex gap-6">
-                 <a href="#" className="hover:text-primary transition-colors flex items-center gap-2">
+                 <a href="https://www.linkedin.com/in/kate-harris-/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-2">
                    <Linkedin size={14} strokeWidth={1.5} />
                    <span className="hidden sm:inline">linkedin</span>
                  </a>
-                 <a href="#" className="hover:text-primary transition-colors flex items-center gap-2">
+                 <a href="https://www.instagram.com/accio.kate" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-2">
                    <Instagram size={14} strokeWidth={1.5} />
                    <span className="hidden sm:inline">instagram</span>
+                 </a>
+                 <a href="https://open.spotify.com/user/qwrr744ji1ksssoqcw60wyb39?si=e6efd20285d04d73" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-2">
+                   <Music2 size={14} strokeWidth={1.5} />
+                   <span className="hidden sm:inline">spotify</span>
                  </a>
                </div>
              </div>
