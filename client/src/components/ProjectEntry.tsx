@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "wouter";
 
 interface ProjectEntryProps {
+  slug: string;
+  category: string;
   title: string;
   date: string;
   description: string;
@@ -9,7 +11,7 @@ interface ProjectEntryProps {
   imageUrl?: string;
 }
 
-export function ProjectEntry({ title, date, description, tags, imageUrl }: ProjectEntryProps) {
+export function ProjectEntry({ slug, category, title, date, description, tags, imageUrl }: ProjectEntryProps) {
   return (
     <div className="group space-y-4 border border-border/40 p-6 bg-card/20 hover:bg-card/40 transition-all">
       <div className="flex justify-between items-start gap-4">
@@ -37,7 +39,7 @@ export function ProjectEntry({ title, date, description, tags, imageUrl }: Proje
       </p>
 
       <div className="pt-2">
-        <Link href={`#`}>
+        <Link href={`/project/${category}/${slug}`}>
           <a className="text-[11px] font-mono text-primary hover:underline lowercase tracking-widest">
             view_details →
           </a>
