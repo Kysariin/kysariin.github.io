@@ -60,8 +60,8 @@ function PageLayout({ title, children }: { title: React.ReactNode, children: Rea
           <footer className="pt-16 opacity-40 hover:opacity-100 transition-opacity duration-500">
              <div className="h-[1px] w-full bg-border" />
              <div className="flex justify-between py-4 text-[10px] font-mono tracking-widest uppercase text-muted-foreground">
-               <span>loc: 37.7749° N, 122.4194° W</span>
-               <span>id: 0x42_sys_output</span>
+               <span>© {new Date().getFullYear()} portfolio</span>
+               <span>v1.0.42</span>
              </div>
           </footer>
         </article>
