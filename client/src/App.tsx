@@ -9,28 +9,27 @@ import { QueryClientProvider } from "@tanstack/react-query";
 function Navigation() {
   const [location] = useLocation();
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Embedded", href: "/embedded" },
-    { name: "Sound", href: "/sound" },
-    { name: "Misc", href: "/misc" },
+    { name: "home", href: "/" },
+    { name: "embedded", href: "/embedded" },
+    { name: "sound", href: "/sound" },
+    { name: "misc", href: "/misc" },
   ];
 
   return (
-    <header className="border-b-2 border-primary/20 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-      <div className="container mx-auto px-4 h-16 flex items-center">
-        <nav className="flex items-center gap-1">
+    <header className="border-b border-border/60 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-center">
+        <nav className="flex items-center gap-8">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href}>
               <a
                 className={cn(
-                  "px-4 py-2 text-xs font-black uppercase tracking-widest transition-all hover:bg-primary hover:text-white relative group overflow-hidden",
+                  "text-xs font-medium lowercase tracking-[0.2em] transition-colors relative py-1",
                   location === item.href 
-                    ? "bg-primary/10 text-primary border-l-2 border-primary" 
-                    : "text-muted-foreground"
+                    ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-primary" 
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <span className="relative z-10">{item.name}</span>
-                <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-200 z-0" />
+                {item.name}
               </a>
             </Link>
           ))}
@@ -42,22 +41,30 @@ function Navigation() {
 
 function PageLayout({ title, children }: { title: React.ReactNode, children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="scanline" />
+    <div className="min-h-screen bg-background relative selection:bg-primary/20">
+      <div className="paper-texture" />
       <Navigation />
-      <main className="container mx-auto px-4 py-20 max-w-4xl">
-        <div className="border-2 border-primary/20 p-8 md:p-12 bg-card/30 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-2 text-[10px] font-mono text-primary/40">v1.0.42_CORE</div>
-          <h1 className="text-6xl md:text-8xl font-black mb-8 glitch-text">{title}</h1>
-          <div className="text-lg md:text-xl text-muted-foreground leading-relaxed font-mono">
+      <main className="container mx-auto px-4 py-32 max-w-3xl">
+        <article className="space-y-12">
+          <header className="space-y-4">
+            <div className="h-[1px] w-8 bg-primary/40 mb-8" />
+            <h1 className="text-5xl md:text-7xl font-serif text-foreground/90 lowercase leading-none">
+              {title}
+            </h1>
+          </header>
+          
+          <div className="prose prose-invert prose-sm max-w-none text-muted-foreground/80 leading-relaxed font-sans space-y-6">
             {children}
           </div>
-          <div className="mt-12 flex gap-4">
-            <div className="h-1 w-12 bg-primary" />
-            <div className="h-1 w-4 bg-secondary" />
-            <div className="h-1 w-2 bg-muted" />
-          </div>
-        </div>
+
+          <footer className="pt-16 opacity-20 hover:opacity-100 transition-opacity duration-500">
+             <div className="h-[1px] w-full bg-border/40" />
+             <div className="flex justify-between py-4 text-[10px] font-mono tracking-widest uppercase">
+               <span>loc: 37.7749° N, 122.4194° W</span>
+               <span>id: 0x42_sys_output</span>
+             </div>
+          </footer>
+        </article>
       </main>
     </div>
   );
@@ -67,46 +74,69 @@ function PageLayout({ title, children }: { title: React.ReactNode, children: Rea
 
 function Home() {
   return (
-    <PageLayout title={<>System<br/>Output</>}>
-      <p>// INITIALIZING INTERFACE...</p>
-      <p>// LOADING PROJECT_FILES...</p>
-      <p className="mt-4">Creative technologist exploring the fringe of embedded systems and computational sound.</p>
+    <PageLayout title={<>system<br/>output</>}>
+      <div className="space-y-4 font-mono text-[13px] opacity-60">
+        <p>// current_status: exploration</p>
+        <p>// active_threads: embedded_systems, computational_audio</p>
+      </div>
+      <p className="text-lg font-serif italic text-foreground/80">
+        Creative technologist exploring the fringe of embedded systems and computational sound.
+      </p>
+      <div className="pt-8 text-sm leading-loose max-w-xl">
+        A practice at the intersection of material hardware and digital abstraction. 
+        Focusing on tactile interfaces, generative audio algorithms, and the poetic potential of "obsolete" technology.
+      </div>
     </PageLayout>
   );
 }
 
 function Embedded() {
   return (
-    <PageLayout title="Embedded">
-      <p>// ACCESSING HARDWARE_REPORTS...</p>
-      <p className="mt-4">Projects and exploration in the field of creative embedded systems.</p>
+    <PageLayout title="embedded">
+      <div className="space-y-4 font-mono text-[13px] opacity-60">
+        <p>// module: hardware_research</p>
+      </div>
+      <p className="text-lg font-serif italic text-foreground/80">Tactile computation and physical logic.</p>
+      <div className="pt-8 text-sm leading-loose max-w-xl">
+        Projects and exploration in the field of creative embedded systems. Designing custom PCB interfaces and bespoke hardware for performance and installation.
+      </div>
     </PageLayout>
   );
 }
 
 function Sound() {
   return (
-    <PageLayout title="Sound">
-      <p>// STREAMING AUDIO_DATA...</p>
-      <p className="mt-4">Exploring the intersection of algorithms and audio.</p>
+    <PageLayout title="sound">
+      <div className="space-y-4 font-mono text-[13px] opacity-60">
+        <p>// module: audio_synthesis</p>
+      </div>
+      <p className="text-lg font-serif italic text-foreground/80">Algorithmic composition and digital decay.</p>
+      <div className="pt-8 text-sm leading-loose max-w-xl">
+        Exploring the intersection of mathematical structures and human perception. Real-time synthesis, granular manipulation, and procedural soundscapes.
+      </div>
     </PageLayout>
   );
 }
 
 function Misc() {
   return (
-    <PageLayout title="Misc">
-      <p>// RETRIEVING ARCHIVE...</p>
-      <p className="mt-4">Various other projects and experiments.</p>
+    <PageLayout title="misc">
+      <div className="space-y-4 font-mono text-[13px] opacity-60">
+        <p>// module: peripheral_archive</p>
+      </div>
+      <p className="text-lg font-serif italic text-foreground/80">Fragments and ephemeral data.</p>
+      <div className="pt-8 text-sm leading-loose max-w-xl">
+        Various other projects, experiments, and visual studies that don't fit into primary categories.
+      </div>
     </PageLayout>
   );
 }
 
 function NotFound() {
   return (
-    <PageLayout title="404">
-      <p>// ERROR: PAGE_NOT_FOUND</p>
-      <Link href="/"><a className="mt-4 inline-block text-primary hover:underline font-mono">Return to Home</a></Link>
+    <PageLayout title="error">
+      <p className="font-mono text-[13px] opacity-60">// status: 404_not_found</p>
+      <Link href="/"><a className="mt-8 inline-block text-primary hover:underline font-mono text-xs tracking-widest uppercase">return_to_home</a></Link>
     </PageLayout>
   );
 }
