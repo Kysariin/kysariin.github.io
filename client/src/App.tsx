@@ -118,7 +118,7 @@ function Navigation() {
             <Link key={item.href} href={item.href}>
               <a
                 className={cn(
-                  "text-xs font-semibold lowercase tracking-[0.2em] transition-colors relative py-1",
+                  "text-sm md:text-base font-semibold lowercase tracking-[0.2em] transition-colors relative py-1",
                   location === item.href 
                     ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-primary"
                     : "text-muted-foreground hover:text-foreground"
@@ -154,7 +154,7 @@ function PageLayout({ title, children }: { title: React.ReactNode, children: Rea
 
           <footer className="pt-16 opacity-40 hover:opacity-100 transition-opacity duration-500">
              <div className="h-px w-full bg-border" />
-             <div className="flex justify-between items-center py-6 text-[10px] font-mono tracking-widest uppercase text-muted-foreground">
+             <div className="flex justify-between items-center py-6 text-xs md:text-sm font-mono tracking-widest uppercase text-muted-foreground">
                <span>© {new Date().getFullYear()} portfolio</span>
                <div className="flex gap-6">
                  <a
