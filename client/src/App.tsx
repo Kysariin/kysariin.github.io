@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Linkedin, Instagram } from "lucide-react";
+import { ProjectEntry } from "@/components/ProjectEntry";
 
 // --- Components ---
 
@@ -107,8 +108,22 @@ function Embedded() {
         <p>// module: hardware_research</p>
       </div>
       <p className="text-lg font-serif italic text-foreground">Tactile computation and physical logic.</p>
-      <div className="pt-8 text-sm leading-loose max-w-xl text-foreground/90">
-        Projects and exploration in the field of creative embedded systems. Designing custom PCB interfaces and bespoke hardware for performance and installation.
+      
+      <div className="space-y-8 pt-8">
+        <ProjectEntry 
+          title="Monolith-01"
+          date="2025.10"
+          description="A standalone granular synthesizer built around the Teensy 4.1 platform. Features a custom laser-cut acrylic chassis and high-resolution touch-sensitive sliders for spatial manipulation."
+          tags={["teensy", "c++", "synthesis"]}
+          imageUrl="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800"
+        />
+        <ProjectEntry 
+          title="Kinetic Loom"
+          date="2025.04"
+          description="An interactive weaving interface that translates mechanical tension into MIDI control data. Exploring the intersection of traditional craft and digital signal processing."
+          tags={["arduino", "sensors", "midi"]}
+          imageUrl="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
+        />
       </div>
     </PageLayout>
   );
