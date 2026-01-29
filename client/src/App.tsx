@@ -3,6 +3,7 @@ import { Link, useLocation, Switch, Route } from "wouter";
 import { cn } from "@/lib/utils";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { Linkedin, Instagram } from "lucide-react";
 
 // --- Components ---
 
@@ -59,8 +60,18 @@ function PageLayout({ title, children }: { title: React.ReactNode, children: Rea
 
           <footer className="pt-16 opacity-40 hover:opacity-100 transition-opacity duration-500">
              <div className="h-[1px] w-full bg-border" />
-             <div className="flex justify-between py-4 text-[10px] font-mono tracking-widest uppercase text-muted-foreground">
+             <div className="flex justify-between items-center py-6 text-[10px] font-mono tracking-widest uppercase text-muted-foreground">
                <span>© {new Date().getFullYear()} portfolio</span>
+               <div className="flex gap-6">
+                 <a href="#" className="hover:text-primary transition-colors flex items-center gap-2">
+                   <Linkedin size={14} strokeWidth={1.5} />
+                   <span className="hidden sm:inline">linkedin</span>
+                 </a>
+                 <a href="#" className="hover:text-primary transition-colors flex items-center gap-2">
+                   <Instagram size={14} strokeWidth={1.5} />
+                   <span className="hidden sm:inline">instagram</span>
+                 </a>
+               </div>
              </div>
           </footer>
         </article>
