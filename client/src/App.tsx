@@ -8,7 +8,7 @@ export const PROJECTS = {
       date: "2026-01-27",
       description: "Assignment for Creative Embedded Systems -- solder a 12-pin header and a bent brass rod to a protoboard.",
       tags: ["soldering", "sculpture", "components"],
-      imageUrl: heroImage,
+      imageUrl: g0ngsh1g0ngsh1HeroImage,
       content: (
         <>
           <h2>Concept</h2>
@@ -44,35 +44,35 @@ export const PROJECTS = {
           
           <h3>Details</h3>
           <ProjectMedia 
-            src={baseImage}
+            src={g0ngsh1BaseImage}
             alt="Bottom of the sculpture"
             caption="Bottom of the sculpture/protoboard. It was very difficult to get the brass to bend the way I wanted it to at the correct height (to reduce unevenness when it stood), hence the pretty messy brass rod paths."
             variant="below"
             aspect="video"
           />
           <ProjectMedia
-            src={topImage}
+            src={g0ngsh1TopImage}
             alt="Top of the sculpture"
             caption="Top of the sculpture/protoboard. The top was intended to look more flowing, which is why both paths have a similar, but different, curve."
             variant="below"
             aspect="video"
           />
           <ProjectMedia
-            src={headerImage}
+            src={g0ngsh1HeaderImage}
             alt="Pin header of the sculpture"
             caption="Pin header of the sculpture/protoboard. I had never soldered anything before, so this was definitely a learning curve!"
             variant="below"
             aspect="video"
           />
           <ProjectMedia
-            src={solderBImage}
+            src={g0ngsh1SolderBImage}
             alt="Soldering bottom of the sculpture"
             caption="Soldering bottom of the sculpture. Trying to hold the ends of the brass rod together made it pretty difficult, resulting in lots of solder being used here..."
             variant="below"
             aspect="video"
           />
           <ProjectMedia
-            src={solderTImage}
+            src={g0ngsh1SolderTImage}
             alt="Soldering top of the sculpture"
             caption="Soldering top of the sculpture. Similar issue, but a bit less egregious. The intent was for them to diverge on the same spot, but with the finickiness of the brass rod staying in place as I solder, I couldn't pull it off."
             variant="below"
@@ -81,6 +81,16 @@ export const PROJECTS = {
       ),
     },
   ],
+  sound: [
+    {
+      slug: "colorful-keyboard",
+      title: "Colorful Keyboard",
+      date: "2026-01-30",
+      description: "A polyphonic synthesizer built with JS and WebAudio, with ADSR envelopes and gain management to prevent clipping. The keyboard includes a reactive visualizer that maps audio frequencies to color gradients in real-time.",
+      tags: ["audio", "webaudio", "synthesizer"],
+      imageUrl: colorfulKeyboardImage
+    }
+  ]
   // Add other categories as needed
 };
 import React from "react";
@@ -92,12 +102,13 @@ import { Linkedin, Instagram } from "lucide-react";
 import { FaSpotify } from "react-icons/fa";
 import { ProjectEntry } from "@/components/ProjectEntry";
 import { ProjectMedia } from "@/components/ProjectMedia";
-import heroImage from "@/assets/g0ngsh1/g0ngsh1_hero.png";
-import baseImage from "@/assets/g0ngsh1/g0ngsh1_base.png";
-import topImage from "@/assets/g0ngsh1/g0ngsh1_top.png";
-import headerImage from "@/assets/g0ngsh1/g0ngsh1_pinheader.png";
-import solderBImage from "@/assets/g0ngsh1/g0ngsh1_solder_bottom.png";
-import solderTImage from "@/assets/g0ngsh1/g0ngsh1_solder_top.png";
+import g0ngsh1g0ngsh1HeroImage from "@/assets/g0ngsh1/g0ngsh1_hero.png";
+import g0ngsh1BaseImage from "@/assets/g0ngsh1/g0ngsh1_base.png";
+import g0ngsh1TopImage from "@/assets/g0ngsh1/g0ngsh1_top.png";
+import g0ngsh1HeaderImage from "@/assets/g0ngsh1/g0ngsh1_pinheader.png";
+import g0ngsh1SolderBImage from "@/assets/g0ngsh1/g0ngsh1_solder_bottom.png";
+import g0ngsh1SolderTImage from "@/assets/g0ngsh1/g0ngsh1_solder_top.png";
+import colorfulKeyboardImage from "@/assets/colorfulkeyboard/colorfulkeyboard.png";
 
 // --- Components ---
 
