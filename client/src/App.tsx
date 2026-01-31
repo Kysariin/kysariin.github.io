@@ -88,7 +88,16 @@ export const PROJECTS = {
       date: "2026-01-30",
       description: "A polyphonic synthesizer built with JS and WebAudio, with ADSR envelopes and gain management to prevent clipping. The keyboard includes a reactive visualizer that maps audio frequencies to color gradients in real-time.",
       tags: ["audio", "webaudio", "synthesizer"],
-      imageUrl: colorfulKeyboardImage
+      imageUrl: colorfulKeyboardImage,
+      content: (
+        <>
+          <h3><a href="https://kysariin.github.io/colorful-keyboard/" target="_blank">LAUNCH LIVE DEMO</a></h3>
+          <ul>
+            <li><a href="https://github.com/kysariin/colorful-keyboard" target="_blank">View GitHub Repository</a></li>
+            <li><a href="https://www.marksantolucito.com/COMS3430/spring2026/Lab1" target="_blank">Original Assignment Reference</a></li>
+          </ul>
+        </>
+      )
     }
   ]
   // Add other categories as needed
