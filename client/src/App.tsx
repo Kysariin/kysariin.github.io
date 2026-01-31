@@ -1,3 +1,22 @@
+import React from "react";
+import { Link, useLocation, Switch, Route } from "wouter";
+import { cn } from "@/lib/utils";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Linkedin, Instagram } from "lucide-react";
+import { FaSpotify } from "react-icons/fa";
+import { ProjectEntry } from "@/components/ProjectEntry";
+import { ProjectMedia } from "@/components/ProjectMedia";
+
+// --- Image Imports ---
+import g0ngsh1HeroImage from "@/assets/g0ngsh1/g0ngsh1_hero.png";
+import g0ngsh1BaseImage from "@/assets/g0ngsh1/g0ngsh1_base.png";
+import g0ngsh1TopImage from "@/assets/g0ngsh1/g0ngsh1_top.png";
+import g0ngsh1HeaderImage from "@/assets/g0ngsh1/g0ngsh1_pinheader.png";
+import g0ngsh1SolderBImage from "@/assets/g0ngsh1/g0ngsh1_solder_bottom.png";
+import g0ngsh1SolderTImage from "@/assets/g0ngsh1/g0ngsh1_solder_top.png";
+import colorfulKeyboardImage from "@/assets/colorfulkeyboard/colorfulkeyboard.png";
+
 // --- Project Data ---
 
 export const PROJECTS = {
@@ -8,31 +27,31 @@ export const PROJECTS = {
       date: "2026-01-27",
       description: "Assignment for Creative Embedded Systems -- solder a 12-pin header and a bent brass rod to a protoboard.",
       tags: ["soldering", "sculpture", "components"],
-      imageUrl: g0ngsh1g0ngsh1HeroImage,
+      imageUrl: g0ngsh1HeroImage,
       content: (
         <>
           <h2>Concept</h2>
           <p>
-          Last week in my Introduction to East Asian Art class, we briefly 
-          discussed <a href="https://www.google.com/search?q=china+dolmens&client=opera-gx&hs=uqN&sca_esv=8a6b26e3cbe8377c&udm=2&biw=1875&bih=958&aic=0&sxsrf=ANbL-n6QNrVncjEA79mzOttbpWWxD6jBzw%3A1769658061185&ei=zdZ6aaT8CtCu5NoP7LS5yQE&ved=0ahUKEwjklvGA6q-SAxVQF1kFHWxaLhkQ4dUDCBI&uact=5&oq=china+dolmens&gs_lp=Egtnd3Mtd2l6LWltZyINY2hpbmEgZG9sbWVuczIGEAAYCBgeSIcEUL0BWL0BcAB4AJABAJgBoQGgAZICqgEDMC4yuAEDyAEA-AEBmAICoAKWApgDAIgGAZIHAzAuMqAHzAGyBwMwLjK4B5YCwgcDMS4xyAcCgAgA&sclient=gws-wiz-img" target="_blank">dolmens</a> in China, which led me to read more about them. 
-          That research eventually brought me to <a href="https://en.wikipedia.org/wiki/Suiseki" target="_blank">suiseki</a>/<a href="https://en.wikipedia.org/wiki/Chinese_scholar%27s_rocks" target="_blank">gongshi,</a> or scholar’s 
-          rocks (viewing stones). I thought it would be interesting to base this 
-          technically modern project off of such a natural kind of art, which is 
-          meant to echo the precarious, almost impossible balance often seen in 
-          these formations.
+            Last week in my Introduction to East Asian Art class, we briefly 
+            discussed <a href="https://www.google.com/search?q=china+dolmens" target="_blank">dolmens</a> in China, which led me to read more about them. 
+            That research eventually brought me to <a href="https://en.wikipedia.org/wiki/Suiseki" target="_blank">suiseki</a>/<a href="https://en.wikipedia.org/wiki/Chinese_scholar%27s_rocks" target="_blank">gongshi,</a> or scholar’s 
+            rocks (viewing stones). I thought it would be interesting to base this 
+            technically modern project off of such a natural kind of art, which is 
+            meant to echo the precarious, almost impossible balance often seen in 
+            these formations.
           </p>
           <p>  
-          The brass rod at the top of the sculpture follows two distinct paths. I 
-          interpret these as people beginning in different places and moving through 
-          unique journeys, yet ultimately arriving where they are meant to be. 
-          The point at which the paths intersect represents this shared, 
-          “destined” endpoint.
+            The brass rod at the top of the sculpture follows two distinct paths. I 
+            interpret these as people beginning in different places and moving through 
+            unique journeys, yet ultimately arriving where they are meant to be. 
+            The point at which the paths intersect represents this shared, 
+            “destined” endpoint.
           </p>
           <p>
-          The title g0ngsh1 references the Chinese term for scholar’s rocks. 
-          Replacing the vowels with numbers serves as a nod to the technological 
-          materials used in the piece, despite its inspiration's roots being in entirely 
-          natural forms.
+            The title g0ngsh1 references the Chinese term for scholar’s rocks. 
+            Replacing the vowels with numbers serves as a nod to the technological 
+            materials used in the piece, despite its inspiration's roots being in entirely 
+            natural forms.
           </p>
           <h3>Hardware</h3>
           <ul>
@@ -96,28 +115,27 @@ export const PROJECTS = {
             <li><a href="https://github.com/kysariin/colorful-keyboard" target="_blank">View GitHub Repository</a></li>
             <li><a href="https://www.marksantolucito.com/COMS3430/spring2026/Lab1" target="_blank">Original Assignment Reference</a></li>
           </ul>
+
+          <h4>Frequency-to-Color Mapping Logic</h4>
+          <p>
+            To create the synesthesia effect, the application mathematically translates audio data into visual data in real-time:
+          </p>
+          <ol>
+            <li>
+              <strong>Normalization (The Ratio):</strong> The code calculates where the played note’s frequency falls within the total range (approx. 260Hz to 980Hz), converting the pitch into a normalized 0.0 to 1.0 ratio.
+            </li>
+            <li>
+              <strong>Linear Interpolation (The Blend):</strong> Using that ratio, the program performs linear interpolation on the RGB channels. For example, a ratio of 0.5 generates a color exactly halfway between the user's chosen start and end colors.
+            </li>
+            <li>
+              <strong>Dynamic Rendering:</strong> The calculated color is applied to the background instantly. Simultaneously, a brightness check analyzes the RGB values and automatically flips the text color (black or white) to ensure readability.
+            </li>
+          </ol>
         </>
       )
     }
   ]
-  // Add other categories as needed
 };
-import React from "react";
-import { Link, useLocation, Switch, Route } from "wouter";
-import { cn } from "@/lib/utils";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Linkedin, Instagram } from "lucide-react";
-import { FaSpotify } from "react-icons/fa";
-import { ProjectEntry } from "@/components/ProjectEntry";
-import { ProjectMedia } from "@/components/ProjectMedia";
-import g0ngsh1g0ngsh1HeroImage from "@/assets/g0ngsh1/g0ngsh1_hero.png";
-import g0ngsh1BaseImage from "@/assets/g0ngsh1/g0ngsh1_base.png";
-import g0ngsh1TopImage from "@/assets/g0ngsh1/g0ngsh1_top.png";
-import g0ngsh1HeaderImage from "@/assets/g0ngsh1/g0ngsh1_pinheader.png";
-import g0ngsh1SolderBImage from "@/assets/g0ngsh1/g0ngsh1_solder_bottom.png";
-import g0ngsh1SolderTImage from "@/assets/g0ngsh1/g0ngsh1_solder_top.png";
-import colorfulKeyboardImage from "@/assets/colorfulkeyboard/colorfulkeyboard.png";
 
 // --- Components ---
 
@@ -239,11 +257,20 @@ function Systems() {
         <p>// module: creative_embedded_systems</p>
       </div>
       <p className="text-lg font-serif italic text-foreground">COMS3930 with Prof. Mark Santolucito</p>
-      <div className="pt-8 text-sm leading-loose max-w-xl text-foreground/90">
-        
+      <div className="pt-12 grid gap-6">
+        {PROJECTS.embedded.map((p) => (
+          <ProjectEntry
+            key={p.slug}
+            slug={p.slug}
+            category="systems"
+            title={p.title}
+            date={p.date}
+            description={p.description}
+            tags={p.tags}
+            imageUrl={"imageUrl" in p ? (p as any).imageUrl : undefined}
+          />
+        ))}
       </div>
-
-      
     </PageLayout>
   );
 }
@@ -288,11 +315,12 @@ function Misc() {
 }
 
 // --- Project Detail Page ---
+
 function ProjectPage({ category, slug }: { category: string; slug: string }) {
   const [, setLocation] = useLocation();
   const categoryToProjects: Record<string, Array<any>> = {
     systems: PROJECTS.embedded,
-    // sound: PROJECTS.sound,
+    sound: PROJECTS.sound,
     // misc: PROJECTS.misc,
   };
 
@@ -362,6 +390,9 @@ function ProjectPage({ category, slug }: { category: string; slug: string }) {
           prose-headings:font-serif prose-headings:normal-case prose-headings:text-foreground
           prose-h2:text-4xl md:prose-h2:text-5xl prose-h2:font-semibold prose-h2:leading-tight prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border/40
           prose-h3:text-3xl md:prose-h3:text-4xl prose-h3:font-semibold prose-h3:leading-snug prose-h3:mt-10 prose-h3:mb-4
+          
+          prose-h4:text-2xl md:prose-h4:text-3xl prose-h4:font-medium prose-h4:mt-8 prose-h4:mb-4 prose-h4:text-foreground/90
+
           prose-p:my-6 prose-p:leading-relaxed prose-p:text-foreground/90
           prose-ul:my-5 prose-li:my-1.5">
           {project.content}
