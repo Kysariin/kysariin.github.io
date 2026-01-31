@@ -234,20 +234,7 @@ function Systems() {
         
       </div>
 
-      <div className="pt-12 grid gap-6">
-        {PROJECTS.embedded.map((p) => (
-          <ProjectEntry
-            key={p.slug}
-            slug={p.slug}
-            category="systems"
-            title={p.title}
-            date={p.date}
-            description={p.description}
-            tags={p.tags}
-            imageUrl={"imageUrl" in p ? (p as any).imageUrl : undefined}
-          />
-        ))}
-      </div>
+      
     </PageLayout>
   );
 }
@@ -259,8 +246,19 @@ function Sound() {
         <p>// module: computational_sound</p>
       </div>
       <p className="text-lg font-serif italic text-foreground">COMS3430 with Prof. Mark Santolucito</p>
-      <div className="pt-8 text-sm leading-loose max-w-xl text-foreground/90">
-        TBD
+      <div className="pt-12 grid gap-6">
+        {PROJECTS.sound.map((p) => (
+          <ProjectEntry
+            key={p.slug}
+            slug={p.slug}
+            category="sound"
+            title={p.title}
+            date={p.date}
+            description={p.description}
+            tags={p.tags}
+            imageUrl={"imageUrl" in p ? (p as any).imageUrl : undefined}
+          />
+        ))}
       </div>
     </PageLayout>
   );
