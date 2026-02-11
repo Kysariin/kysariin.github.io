@@ -16,7 +16,7 @@ export function ProjectEntry({ slug, category, title, date, description, tags, i
     <div className="group space-y-4 border border-border/40 p-6 bg-card/20 hover:bg-card/40 transition-all">
       <div className="flex justify-between items-start gap-4">
         <div className="space-y-1">
-          <h3 className="text-xl font-serif text-foreground/90 lowercase">{title}</h3>
+          <h3 className="text-xl font-serif text-foreground/90 normal-case">{title}</h3>
           <p className="font-mono text-[11px] text-primary/60">{date}</p>
         </div>
         <div className="flex gap-2">
