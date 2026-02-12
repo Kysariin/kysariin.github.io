@@ -35,6 +35,9 @@ export const PROJECTS = {
       imageUrl: heartVideo,
       content: (
         <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // click here for the PCB files: <a href="https://github.com/Kysariin/COMS3930_PCB" target="_blank" className="hover:underline text-primary">github.com/Kysariin/COMS3930_PCB</a>
+          </p>
           <h2>Concept</h2>
           <p>
             "heArt" is a custom heart-shaped PCB designed for a Valentine’s-adjacent deadline, though its wiring initially attempted a deeper thematic 
@@ -70,7 +73,6 @@ export const PROJECTS = {
             LED currently just lights up, without any blinking behavior. Most likely there is a short somewhere in the traces, but despite carefully chipping
             away at any solder bridges I could find, I haven't been able to fix it yet. In addition to the closeness of pins and pads, my fine motor skills 
             were not the best on the day of soldering due to Tourette's, but I am glad I got it to at least power on!! 
-            
           </p>
 
           <h3>Bill of Materials</h3>
