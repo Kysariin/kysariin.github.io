@@ -41,8 +41,8 @@ export const PROJECTS = {
           <h2>Concept</h2>
           <p>
             "heArt" is a custom heart-shaped PCB designed for a Valentine’s-adjacent deadline, though its wiring initially attempted a deeper thematic 
-            connection. As an East Asian Studies minor, I originally intended to incorporate the kanji for "love" (愛) into the circuit layout. When the 
-            complex strokes proved impossible to route cleanly, I shifted to a stylized "A" formation—a nod to the kanji’s romanization, <i>ai</i>.
+            connection. As someone minoring in East Asian Studies, I originally intended to incorporate the kanji for "love" (愛) into the circuit layout. When the 
+            complex strokes proved seemingly impossible to route cleanly, I shifted to a stylized "A" formation -- a nod to the kanji’s romanization, <i>ai</i>.
           </p>
           <p>
             While the traces don't strictly reflect this "A," the component placement does: the battery forms the tip of the A, the timer chip acts as the horizontal 
@@ -50,7 +50,7 @@ export const PROJECTS = {
             feels like an apt metaphor for the unpredictability of love and how it rarely fits into neat, preconceived structures.
           </p>
           <p>
-            The "A" being capitalized is of course a nod to the kanji's romanization. "Love" (the capital "A" based on <i>ai</i>/愛) being at the legitimate center 
+            The "A" in the title being capitalized is of course a nod to the kanji's romanization. "Love" (the capital "A" based on <i>ai</i>/愛) being at the legitimate center 
             of the word is a happy coincidence that I like to think adds to the title's meaning, even if it was not intentional.
           </p>
 
