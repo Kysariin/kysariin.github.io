@@ -1,13 +1,28 @@
 import React from "react";
 import { ProjectMedia } from "@/components/ProjectMedia";
 
+// g0ngsh1 images
 import g0ngsh1HeroImage from "@/assets/g0ngsh1/g0ngsh1_hero.png";
 import g0ngsh1BaseImage from "@/assets/g0ngsh1/g0ngsh1_base.png";
 import g0ngsh1TopImage from "@/assets/g0ngsh1/g0ngsh1_top.png";
 import g0ngsh1HeaderImage from "@/assets/g0ngsh1/g0ngsh1_pinheader.png";
 import g0ngsh1SolderBImage from "@/assets/g0ngsh1/g0ngsh1_solder_bottom.png";
 import g0ngsh1SolderTImage from "@/assets/g0ngsh1/g0ngsh1_solder_top.png";
+
+// colorful keyboard image
 import colorfulKeyboardImage from "@/assets/colorfulkeyboard/colorfulkeyboard.png";
+
+// heArt imedia
+import heartVideo from "@/assets/heArt/lightVideo.mp4";
+import heartPostMill from "@/assets/heArt/postMilling.png";
+import heartMidSolder from "@/assets/heArt/midSolder.png";
+import heartPCBeditor from "@/assets/heArt/PCBeditor.png";
+import heartSchematic from "@/assets/heArt/schematic.png";
+import heartMap from "@/assets/heArt/solderingMap.png";
+import heartLightStill from "@/assets/heArt/stillLight.png";
+import heartCloseup from "@/assets/heArt/closeup.png";
+import heartLeftCloseup from "@/assets/heArt/leftCloseup.png";
+import heartRightCloseup from "@/assets/heArt/rightCloseup.png";
 
 export const PROJECTS = {
   systems: [
@@ -15,9 +30,9 @@ export const PROJECTS = {
       slug: "heart",
       title: "heArt",
       date: "2026-02-11", 
-      description: "A custom heart-shaped PCB designed for Creative Embedded Systems. Afixed to it is a 555 LED timer that blinks red.",
+      description: "A custom heart-shaped PCB designed for Creative Embedded Systems. Afixed to it is a 555 LED timer that (should) blink red.",
       tags: ["pcb design", "milling", "kicad", "fabrication", "soldering"],
-      // imageUrl: heartHeroImage, // TODO: Uncomment this after importing image
+      imageUrl: heartVideo,
       content: (
         <>
           <h2>Concept</h2>
@@ -40,8 +55,8 @@ export const PROJECTS = {
           <ul>
             <li><strong>Power:</strong> 3V CR2032 Coin Cell</li>
             <li><strong>Logic:</strong> TLC555xP Timer Chip</li>
-            <li><strong>Pulse:</strong> ~2.03 Hz Frequency</li>
-            <li><strong>Material:</strong> Copper clad board</li>
+            <li><strong>(Intended) Pulse:</strong> ~2.03 Hz Frequency</li>
+            <li><strong>Material:</strong> Copper board</li>
           </ul>
 
           <h3>Assembly & Fabrication</h3>
@@ -49,6 +64,13 @@ export const PROJECTS = {
             The board outline was imported from an .svg file online, and I used KiCad to design the traces and component placements. 
             I had to iterate quite a bit to get the trace routing right, especially given the heart shape (and attempts to follow the "A" concept).
             The PCB was both milled and soldered in the PL Lab.
+          </p>
+          <p>
+            Despite being very thorough in ensuring the correct resistors and the correct capacitors were in the correct positions, for some reason my
+            LED currently just lights up, without any blinking behavior. Most likely there is a short somewhere in the traces, but despite carefully chipping
+            away at any solder bridges I could find, I haven't been able to fix it yet. In addition to the closeness of pins and pads, my fine motor skills 
+            were not the best on the day of soldering due to Tourette's, but I am glad I got it to at least power on!! 
+            
           </p>
 
           <h3>Bill of Materials</h3>
@@ -100,7 +122,80 @@ export const PROJECTS = {
           </table>
 
           <h3>Details</h3>
-          <p>here will be the images and captions about the process</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+            <ProjectMedia 
+              src={heartSchematic} 
+              alt="heArt Schematic" 
+              caption="The 555 timer circuit schematic in KiCad."
+              className="my-0"
+            />
+            <ProjectMedia 
+              src={heartPCBeditor} 
+              alt="heArt PCB Editor" 
+              caption="Routing the traces within the heart edge-cuts."
+              className="my-0"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-12 items-start">
+            <ProjectMedia 
+              src={heartPostMill}
+              alt="heArt after the milling process"
+              caption="heArt after the milling process, before soldering."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={heartMap}
+              alt="heArt soldering map"
+              caption="My soldering map (drawn in Procreate) to make sure I soldered the right value components in the right places."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={heartMidSolder}
+              alt="heArt mid-soldering"
+              caption="heArt mid-soldering. Some traces/pads were really close!"
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
+          <ProjectMedia
+            src={heartLightStill}
+            alt="heArt lit up"
+            caption="heArt lit up! Unfortunately it just stays on without blinking, likely due to a short somewhere in the traces that I haven't been able to find yet."
+            variant="below"
+            aspect="video"
+            className="my-0"
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-12 items-start">
+            <ProjectMedia
+              src={heartCloseup}
+              alt="Closeup of the center of heArt"
+              caption="Closeup of the center of heArt, showing the battery, timer chip, and some of the traces."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={heartLeftCloseup}
+              alt="Closeup of the left side of heArt"
+              caption="Closeup of the left side of heArt, showing R1 and R2."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={heartRightCloseup}
+              alt="Closeup of the right side of heArt"
+              caption="Closeup of the right side of heArt, showing R3, C1, C2, and the LED."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
         </>
       ),
     },

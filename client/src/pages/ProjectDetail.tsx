@@ -2,8 +2,12 @@ import React from "react";
 import { Link, useLocation } from "wouter";
 import { PageLayout } from "@/components/Layout";
 import { PROJECTS } from "@/data/projects";
+import { cn } from "@/lib/utils";
+
+const isVideo = (path: string) => path.endsWith(".mp4") || path.endsWith(".webm");
 
 export default function ProjectDetail({ category, slug }: { category: string; slug: string }) {
+  const [isHeroZoomed, setIsHeroZoomed] = React.useState(false); // so you can expand the hero as well
   const [, setLocation] = useLocation();
   const categoryToProjects: Record<string, Array<any>> = {
     systems: PROJECTS.systems,
@@ -64,9 +68,50 @@ export default function ProjectDetail({ category, slug }: { category: string; sl
         </div>
 
         {("imageUrl" in project) && (project as any).imageUrl && (
-          <div className="aspect-video overflow-hidden border border-border/40 rounded-md grayscale hover:grayscale-0 transition-all duration-500">
-            <img src={(project as any).imageUrl} alt={project.title} loading="lazy" className="w-full h-full object-cover" />
-          </div>
+          <>
+            <div 
+              onClick={() => !isVideo((project as any).imageUrl) && setIsHeroZoomed(true)}
+              className={cn(
+                "aspect-video overflow-hidden border border-border/40 rounded-md grayscale hover:grayscale-0 transition-all duration-500 bg-card/30",
+                !isVideo((project as any).imageUrl) && "cursor-zoom-in"
+              )}
+            >
+              {isVideo((project as any).imageUrl) ? (
+                <video 
+                  src={(project as any).imageUrl} 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline 
+                  className="w-full h-full object-cover" 
+                />
+              ) : (
+                <img 
+                  src={(project as any).imageUrl} 
+                  alt={project.title} 
+                  loading="lazy" 
+                  className="w-full h-full object-cover" 
+                />
+              )}
+            </div>
+
+            {/* Fullscreen Hero Overlay (Images only) */}
+            {isHeroZoomed && (
+              <div 
+                className="fixed inset-0 z-100 flex items-center justify-center bg-background/95 backdrop-blur-md p-4 md:p-10 cursor-zoom-out animate-in fade-in duration-300"
+                onClick={() => setIsHeroZoomed(false)}
+              >
+                <img 
+                  src={(project as any).imageUrl} 
+                  alt={project.title} 
+                  className="max-w-full max-h-full object-contain shadow-2xl animate-in zoom-in duration-300"
+                />
+                <button className="absolute top-8 right-8 text-primary font-mono text-[10px] tracking-[0.2em] uppercase hover:underline">
+                  [ close_hero ]
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         <p className="text-base md:text-lg leading-relaxed text-foreground/80 font-serif">

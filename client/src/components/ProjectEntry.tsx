@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "wouter";
 
+const isVideo = (path: string) => path.endsWith(".mp4") || path.endsWith(".webm");
+
 interface ProjectEntryProps {
   slug: string;
   category: string;
@@ -29,8 +31,19 @@ export function ProjectEntry({ slug, category, title, date, description, tags, i
       </div>
       
       {imageUrl && (
-        <div className="aspect-video overflow-hidden border border-border/40 grayscale hover:grayscale-0 transition-all duration-500">
-          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+        <div className="aspect-video overflow-hidden border border-border/40 grayscale hover:grayscale-0 transition-all duration-500 bg-card/30">
+          {isVideo(imageUrl) ? (
+            <video 
+              src={imageUrl} 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              className="w-full h-full object-cover" 
+            />
+          ) : (
+            <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+          )}
         </div>
       )}
 
