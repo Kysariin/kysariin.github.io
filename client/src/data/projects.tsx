@@ -24,6 +24,9 @@ import heartCloseup from "@/assets/heArt/closeup.png";
 import heartLeftCloseup from "@/assets/heArt/leftCloseup.png";
 import heartRightCloseup from "@/assets/heArt/rightCloseup.png";
 
+// colorful keyboard + synth image
+import colorfulKeyboard2Image from "@/assets/modsynthkeyboard/lab2keyboard.png";
+
 export const PROJECTS = {
   systems: [
     {
@@ -281,6 +284,63 @@ export const PROJECTS = {
     },
   ],
   sound: [
+    {
+      slug: "multi-mode-synth",
+      title: "Multi-Mode Synthesizer",
+      date: "2026-02-13",
+      description: "An expansion of the polyphonic keyboard into a multi-engine synthesizer. It supports Additive, AM, and FM synthesis modes, controlled via a custom LFO system for dynamic frequency modulation.",
+      tags: ["audio", "webaudio", "DSP", "synthesis"],
+      imageUrl: colorfulKeyboard2Image, // Don't forget to import this asset at the top
+      content: (
+        <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // source code: <a href="https://github.com/Kysariin/colorful-keyboard-with-synth" target="_blank" className="hover:underline text-primary">github.com/Kysariin/colorful-keyboard-with-synth</a>
+          </p>
+
+          <h3><a href="https://kysariin.github.io/colorful-keyboard-with-synth/" target="_blank">LAUNCH LIVE DEMO</a></h3>
+          <ul>
+            <li><a href="https://github.com/Kysariin/colorful-keyboard-with-synth" target="_blank">View GitHub Repository</a></li>
+            <li><a href="https://www.marksantolucito.com/COMS3430/spring2026/Lab2" target="_blank">Original Assignment Reference</a></li>
+          </ul>
+
+          <h4>Project Demo</h4>
+          <div className="relative w-full aspect-video my-8 border border-border/40 rounded-md overflow-hidden bg-card/30">
+            <iframe
+              src="https://player.vimeo.com/video/1164856784?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+              className="absolute top-0 left-0 w-full h-full"
+              title="Lab 2: Multi-Mode Synth Demo"
+            ></iframe>
+          </div>
+          <h4>Advanced Synthesis Modes</h4>
+          <p>
+            For Lab 2, I transitioned the keyboard from a simple oscillator-per-key setup to something more customizable, per the assignment details:
+          </p>
+          <ul>
+            <li><strong>Additive:</strong> Creates a thicker, more harmonic sound than Lab 1's keyboard (one wave).</li>
+            <li><strong>AM (Amplitude Modulation):</strong> Uses a modulator to drive the carrier's gain, making tremelo effects and sidebands.</li>
+            <li><strong>FM (Frequency Modulation):</strong> Mapped the modulator directly to the carrier's frequency for more of a metallic-y sound.</li>
+          </ul>
+
+          <h4>LFO Integration & Debugging</h4>
+          <p>
+            The biggest challenge for me was getting the LFO to behave consistently across all synthesis modes.
+          </p>
+          <ol>
+            <li>
+              <strong>Debugging the Modulator:</strong> I initially struggled with a broken modulation path, but fixed it by correctly routing the <code>lfoRateValue</code> to the carrier oscillator's frequency input.
+            </li>
+            <li>
+              <strong>Interface & Playability:</strong> I added a front-end slider system for LFO Rate and Depth. I really wanted to exceed the basic interaction requirements by making the parameters feel responsive and "playable" in real-time.
+            </li>
+            <li>
+              <strong>Safety First:</strong> I carried over the ADSR envelopes and gain scaling from Lab 1. This was crucial for FM synthesis, as the signals can get pretty chaotic, and I needed to ensure the master output didn't clip.
+            </li>
+          </ol>
+        </>
+      )
+    },
     {
       slug: "colorful-keyboard",
       title: "Colorful Keyboard",
