@@ -96,8 +96,8 @@ export const PROJECTS = {
         <h3>Difficulties</h3>
         <p>
           Working with embedded hardware requires balancing artistic intent with strict computational limits. One of the first issues I ran into -- and one that others working with TFT displays likely encountered -- was a 
-          severe strobe and flickering effect. Drawing many calculated lines directly to the screen frame-by-frame is simply too slow. To fix this, I researched and figured out how to implement a double-buffering system using the 
-          <code>TFT_eSprite</code> library. This is like an off-screen canvas where the wave is drawn first, and then pushed to the physical screen instantly. While this "spends" more RAM, it is a necessary trade-off for a clean, flicker-free visual.
+          severe strobe and flickering effect. Plus, drawing many calculated lines directly to the screen frame-by-frame is simply too slow. To fix this, I researched and figured out how to implement a double-buffering system using the 
+            <code>TFT_eSprite</code> library. This is like an off-screen canvas where the wave is drawn first, and then pushed to the physical screen instantly. While this "costs more," it is a necessary trade-off for a clean, flicker-free visual.
         </p>
         <p>
           Another major hurdle was achieving true randomness. Despite calculating randomly, my microcontroller's waves seemed to be the same every time. Initially, my generative art was acting like a pre-recorded GIF, drawing the exact same mountain 
