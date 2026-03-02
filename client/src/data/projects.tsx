@@ -27,8 +27,86 @@ import heartRightCloseup from "@/assets/heArt/rightCloseup.png";
 // colorful keyboard + synth image
 import colorfulKeyboard2Image from "@/assets/modsynthkeyboard/lab2keyboard.png";
 
+// (dis)order media
+import disorderGIF from "@/assets/(dis)order/disorder.gif";
+import disorderThumb from "@/assets/(dis)order/disorderThumb.png";
+
 export const PROJECTS = {
   systems: [
+    {slug: "disorder",
+      title: "(dis)order",
+      date: "2026-03-01",
+      description: "A program for an ESP32 microcontroller that combines generative wave art with time-synchronized lyrics to visualize Joy Division's Unknown Pleasures album while Disorder's lyrics pan across the screen.",
+      tags: ["ESP32", "generative art", "music", "visualization"],
+      imageUrl: disorderGIF,
+      content: (
+        <>
+        <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+          // click here for the github: <a href="https://github.com/Kysariin/-dis-order" target="_blank" className="hover:underline text-primary">github.com/Kysariin/-dis-order</a>
+        </p>
+        <h2>Concept</h2>
+        <p>
+          (dis)order is a generative art project that visualizes Joy Division's iconic album "Unknown Pleasures" while synchronizing the lyrics of the song "Disorder" 
+          across the screen. The program runs on an ESP32 microcontroller, using a combination of generative wave patterns and text rendering to create a dynamic 
+          experience that pays homage to the band's post-punk sound.
+        </p>
+        <p>
+          I thought of this concept almost immediately after the assignment was introduced. I have always loved Joy Division -- attributing a lot of my music taste to them (and my parents
+          for playing them around the house) and the post-punk/goth scene in general. I wanted to create a project that combined my love for music and technology, and this felt like a great opportunity
+          to bridge the two.
+        </p>
+        <h2>Installation</h2>
+        
+        <div className="relative w-full aspect-video my-8 border border-border/40 rounded-md overflow-hidden bg-card/30">
+          <iframe
+            src="https://player.vimeo.com/video/1169408407?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            className="absolute top-0 left-0 w-full h-full"
+            title="(dis)order Exhibition Video"
+          ></iframe>
+        </div>
+        <p>
+          Due to unforeseen circumstances completely out of my control, I was not able to be part of the physical installation with the rest of my class, which pushed me to improvise my own "installation."
+          The video portrays my ESP32 affixed to the front of my "Unknown Pleasures" t-shirt, allowing the viewer to see the dynamic, living waves operating against the static, mass-market print. 
+        </p>
+        <p>
+          While the entire album is incredible, I specifically picked "Disorder" because I found myself amused by the irony of the song's title in relation to the nature of the project. Embedded programming
+          is inherently intentional, mathematical, and orderly, yet the song's title is an antonym of that. The opening lines also played a role in me choosing this song: "I've been waiting for a guide to come
+          and take me by the hand / Could these sensations make me feel the pleasures of a normal man?""
+        </p>
+        <p>
+            The "guide" in this case could be me, the creator of the program. Despite thte lyrics expressing a desire to feel the "pleasures of a normal man," the ESP32 is a machine bound entirely by logic, 
+            executing a calculation of a performance, created by a human, rather than actually experiencing it. However, this illusion of perfect control is unintentionally broken at the very end of my video. The
+            hardware accidentally detaches from the fabric and falls out of the frame -- an unscripted hardware failure that could act as a literal manifestation of "disorder," introducing physical chaos into an
+            otherwise very calculated system.
+        </p>
+        <h3>Hardware</h3>
+        <p>
+          The project was uploaded to a LILYGO ESP32 microcontroller, powered by either a battery (connected on the back) or USB-C, depending on the situation.
+        </p>
+        <ProjectMedia
+            src={disorderThumb}
+            alt="Still image of (dis)order displaying the waves and the band title"
+            caption="Still image of (dis)order displaying the waves and the band title"
+            variant="below"
+            aspect="video"
+          />
+        <h3>Difficulties</h3>
+        <p>
+          Working with embedded hardware requires balancing artistic intent with strict computational limits. One of the first issues I ran into -- and one that others working with TFT displays likely encountered -- was a 
+          severe strobe and flickering effect. Drawing many calculated lines directly to the screen frame-by-frame is simply too slow. To fix this, I researched and figured out how to implement a double-buffering system using the 
+          <code>TFT_eSprite</code> library. This is like an off-screen canvas where the wave is drawn first, and then pushed to the physical screen instantly. While this "spends" more RAM, it is a necessary trade-off for a clean, flicker-free visual.
+        </p>
+        <p>
+          Another major hurdle was achieving true randomness. Despite calculating randomly, my microcontroller's waves seemed to be the same every time. Initially, my generative art was acting like a pre-recorded GIF, drawing the exact same mountain 
+          peaks every time I plugged it in. To fix this, I programmed the board to read the voltage from an unconnected analog pin (<code>analogRead(0)</code>) on startup. Since the pin is empty, it is like a tiny antenna that picks up stray electromagnetic 
+          static from around. Feeding that environmental noise into the random seed ensures that the waves are genuinely unique and generative every single time the piece is turned on.
+        </p>
+        </>
+      )
+    },
     {
       slug: "heart",
       title: "heArt",
