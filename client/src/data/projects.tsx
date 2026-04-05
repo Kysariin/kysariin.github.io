@@ -27,12 +27,162 @@ import heartRightCloseup from "@/assets/heArt/rightCloseup.png";
 // colorful keyboard + synth image
 import colorfulKeyboard2Image from "@/assets/modsynthkeyboard/lab2keyboard.png";
 
+// sprawl images
+import sprawlHero from "@/assets/sprawl/sprawlHero.png";
+import sprawlESP32 from "@/assets/sprawl/sprawlESP32.png";
+import sprawlCarve from "@/assets/sprawl/sprawlCarve.png";
+import sprawlSolder from "@/assets/sprawl/sprawlSolder.png";
+import sprawlInterior from "@/assets/sprawl/sprawlInterior.png";
+
 // (dis)order media
 import disorderGIF from "@/assets/(dis)order/disorder.gif";
 import disorderThumb from "@/assets/(dis)order/disorderThumb.png";
 
 export const PROJECTS = {
   systems: [
+    {
+      slug: "sprawl",
+      title: "sprawl",
+      date: "2026-04-05",
+      description: "A capacitive touch instrument built on the ESP32 TTGO T-Display, inspired by William Gibson's Neuromancer. Five copper-tape pads stream touch data over USB to a browser interface that generates sound and visuals in real time via Web Serial and Web Audio.",
+      tags: ["ESP32", "web audio", "web serial", "capacitive touch", "generative art", "instrument"],
+      imageUrl: sprawlHero,
+      content: (
+        <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // for the technical details and to run it yourself: <a href="https://github.com/Kysariin/neuromancer" target="_blank" className="hover:underline text-primary">github.com/Kysariin/neuromancer</a>
+          </p>
+          <h2>Concept</h2>
+          <p>
+            sprawl is a capacitive touch instrument that bridges physical hardware and browser-based audiovisuals, inspired by William Gibson's <em>Neuromancer</em> -- specifically his vision of cyberspace as "a consensual hallucination" and a colorless void of cascading silver-white light as well as the ICE (Intrusion Countermeasures Electronics) in cyberpsace. The name is a nod to the Sprawl trilogy, and essentially the entire project pulls from Gibson's world.
+          </p>
+          <p>
+            Five copper-tape pads connect to the ESP32's touch GPIO pins and stream capacitive readings. A browser page reads that data via the Web Serial API, then uses the Web Audio API and Canvas 2D to generate sound and visuals in real time.
+          </p>
+          <p>
+            There are two modes. Mode 0 is the Matrix. Audibly, it's a bed of sustained drone oscillators tuned to A minor pentatonic. Visually, I wanted to stick to Gibson's actual description of cyberspace as a colorless, infinite void, so it's entirely silver data rain, scan beams, and spinning wireframes over a stark grid. Mode 1 is the ICE. Hitting a pad triggers a distorted percussion hit alongside neon geometry, flying shards, and an oscilloscope. Holding the pad past 350ms crossfades the impact into a sustained bandpass tone.          </p>
+
+          <h2>Demo</h2>
+          <div className="relative w-full aspect-video my-8 border border-border/40 rounded-md overflow-hidden bg-card/30">
+            <iframe
+              src="https://www.youtube.com/embed/jqT7wY5lMDU"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              className="absolute top-0 left-0 w-full h-full"
+              title="sprawl. extended play"
+            ></iframe>
+          </div>
+          <div className="relative w-full aspect-video my-8 border border-border/40 rounded-md overflow-hidden bg-card/30">
+            <iframe
+              src="https://www.youtube.com/embed/PQixQ9UT3OI"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              className="absolute top-0 left-0 w-full h-full"
+              title="sprawl. demo"
+            ></iframe>
+          </div>
+
+          <h3>Hardware</h3>
+          <ul>
+            <li>TTGO T-Display (ESP32 with built-in 240×135 TFT)</li>
+            <li>4 instrument pads + 1 mode-switch pad (copper tape)</li>
+            <li>Breadboard for organizing connections</li>
+            <li>USB-C data cable</li>
+            <li>Vessel for housing the ESP32 and pads</li>
+          </ul>
+
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Pad</th>
+                <th className="py-2">Function</th>
+                <th className="py-2">Touch Channel</th>
+                <th className="py-2">GPIO</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2">0</td><td>Instrument</td><td>T8</td><td>33</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">1</td><td>Instrument</td><td>T5</td><td>12</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">2</td><td>Instrument</td><td>T4</td><td>13</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">3</td><td>Instrument</td><td>T7</td><td>27</td></tr>
+              <tr><td className="py-2">4</td><td>Mode Switch</td><td>T2</td><td>2</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Modes</h3>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Mode</th>
+                <th className="py-2">Audio</th>
+                <th className="py-2">Visuals</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10">
+                <td className="py-2">0 — DRONE</td>
+                <td>Sustained oscillators tuned to A minor pentatonic. Multiple pads build a chord. The filter opens the longer you hold.</td>
+                <td>Silver data rain, spinning polygons, scan beams, a grid.</td>
+              </tr>
+              <tr>
+                <td className="py-2">1 — RHYTHM</td>
+                <td>Distorted percussive hit on contact. Hold past 350ms and a sustained bandpass tone fades in.</td>
+                <td>Neon ICE geometry, expanding polygon ripples, flying shards, oscilloscope.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Build</h3>
+          <ProjectMedia
+            src={sprawlHero}
+            alt="sprawl. hero shot"
+            caption="The finished instrument -- copper tape pads wired to the ESP32 TTGO T-Display, housed in its vessel."
+            variant="below"
+            aspect="video"
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 items-start">
+            <ProjectMedia
+              src={sprawlCarve}
+              alt="Carving the vessel"
+              caption="Carving out the vessel to house the ESP32 and route the pad wires."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={sprawlInterior}
+              alt="Interior of the vessel"
+              caption="Interior view showing how the ESP32 and wiring sit inside the enclosure."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 items-start">
+            <ProjectMedia
+              src={sprawlSolder}
+              alt="Soldering connections"
+              caption="Soldering the pad wires to the GPIO pins."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={sprawlESP32}
+              alt="ESP32 TTGO T-Display"
+              caption="The ESP32 TTGO T-Display -- the TFT shows the active mode and pad states."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
+
+          <h3>Keyboard Fallback</h3>
+          <p>
+            As a fallback, keys ASDF trigger pads 0–3, and G switches modes. It is not as encouraged, though, as I did not replicate the reactivity/varying levels in the keyboard version.</p>
+        </>
+      ),
+    },
     {slug: "disorder",
       title: "(dis)order",
       date: "2026-03-01",
