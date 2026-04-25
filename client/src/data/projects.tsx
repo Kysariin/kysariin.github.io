@@ -27,6 +27,12 @@ import heartRightCloseup from "@/assets/heArt/rightCloseup.png";
 // colorful keyboard + synth image
 import colorfulKeyboard2Image from "@/assets/modsynthkeyboard/lab2keyboard.png";
 
+// babel images
+import babelHero from "@/assets/babel/babel_hero.png";
+import babelGraph from "@/assets/babel/babel_claude_graph.svg";
+import babelNotebook from "@/assets/babel/babel_notebook.jpeg";
+import babelFigure from "@/assets/babel/babel_figure.jpeg";
+
 // sprawl images
 import sprawlHero from "@/assets/sprawl/sprawlHero.png";
 import sprawlESP32 from "@/assets/sprawl/sprawlESP32.png";
@@ -512,6 +518,157 @@ export const PROJECTS = {
     },
   ],
   sound: [
+    {
+      slug: "babel",
+      title: "babel",
+      date: "2026-04-24",
+      description: "A two-part exploration of sound synthesis in WebAudio: recreating a babbling brook from a SuperCollider one-liner, and building an R2D2 \"computer babble\" engine from Andy Farnell's Designing Sound.",
+      tags: ["web audio", "FM synthesis", "subtractive synthesis", "sound design"],
+      imageUrl: babelHero,
+      content: (
+        <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // click here for the github: <a href="https://github.com/Kysariin/lab3_compsound" target="_blank" className="hover:underline text-primary">github.com/Kysariin/lab3_compsound</a>
+          </p>
+
+          <h3>
+            <a href="https://kysariin.github.io/lab3_compsound/babbling_brook.html" target="_blank">LAUNCH BABBLING BROOK</a>
+            {" · "}
+            <a href="https://kysariin.github.io/lab3_compsound/r2d2.html" target="_blank">LAUNCH R2D2</a>
+          </h3>
+
+          <h2>Concept</h2>
+          <p>
+            This lab was about learning to read and translate unfamiliar audio code, both literally (SuperCollider --{">"} WebAudio) and conceptually (Farnell's Pure Data patches --{">"} my own implementation). Part I is a direct translation exercise. Part II is sound design.
+          </p>
+          <p>
+            I chose R2D2 for Part II because I was raised watching Star Wars and have always loved R2's sounds. It definitely proved to be difficult, but as if controlled by the Force, I felt compelled to pick it.
+          </p>
+          <p>
+            The title is a nod to the Tower of Babel and languages becoming mutually unintelligible. R2D2 speaks a language the audience can't understand, the brook "babbles" nonsense, and the whole project involved translating between three programming languages (SuperCollider, Pure Data, WebAudio) that don't speak to each other directly.
+          </p>
+
+          <h2>Part I: Babbling Brook</h2>
+          <p>The assignment gave us this SuperCollider one-liner to recreate in WebAudio:</p>
+          <pre><code>{`{RHPF.ar(LPF.ar(BrownNoise.ar(), 400), LPF.ar(BrownNoise.ar(), 14) * 400 + 500, 0.03, 0.1)}.play`}</code></pre>
+          <p>
+            This is subtractive synthesis: start with noise that contains all frequencies, then use filters to carve it into something that sounds like water. Two independent noise sources do different jobs. One is the sound you actually hear (low-pass filtered below 400 Hz), and the other is a slow, random control signal that wobbles the filter's cutoff frequency back and forth. That wobble is what makes it sound like bubbling.
+          </p>
+          <p>
+            The key WebAudio concept here is <code>.connect(param)</code> -- you can route one node's audio output into another node's setting (like its frequency). The incoming signal gets added to whatever value that setting already has. So I set the filter's base frequency to 500, and the wobble signal adds and subtracts from that as it fluctuates.
+          </p>
+          <h3>Tuning</h3>
+          <p>
+            My first version sounded flat. Two changes fixed it:
+          </p>
+          <ul>
+            <li><strong>Resonance (Q) from 20 --{">"} 45:</strong> higher resonance makes the filter "ring" at its cutoff frequency, which is what produces the pitched bubble tones.</li>
+            <li><strong>Modulation depth from 400 --{">"} 1500:</strong> the wobble signal was too quiet after filtering, so the cutoff was barely moving. Cranking the gain made it actually sweep through a wide range.</li>
+          </ul>
+          <p>Both were tuned by ear.</p>
+
+          <h2>Part II: R2D2</h2>
+          <h3>What Farnell says about R2D2</h3>
+          <p>
+            In <em>Designing Sound</em> (Practical 34), Farnell starts by observing that R2D2 sounds a lot like birdcall: pitch sweeps, modulation sweeps, breaks of continuous calling. He also hears similarities to the TB-303 (pitch slides, resonant filter). The actual R2D2 sounds were made by Ben Burtt on an ARP2600, mixed with water pipes, whistles, and his own vocalizations. Farnell's approach is making a synthesizer, and constantly randomizing everything about it. He calls his randomization logic a "random random number generator" because it first rolls dice to decide <em>whether</em> to roll dice.
+          </p>
+          <h3>How FM synthesis works</h3>
+          <p>
+            FM synthesis uses one oscillator (the modulator) to wobble another oscillator's (the carrier) frequency. If the wobble is slow, you hear it as vibrato. If it's fast (hundreds of Hz), your ear can't track individual wobbles. Instead, the sound gets richer and more complex, with new overtones appearing. Three things control the character: the carrier's frequency (what pitch you hear), the modulator's frequency (what kind of overtones appear), and the modulation index (how intense the wobbling is -- low = clean tone, high = harsh and glitchy).
+          </p>
+          <h3>Signal Flow</h3>
+          <ProjectMedia
+            src={babelGraph}
+            alt="R2D2 WebAudio signal flow diagram"
+            caption="R2D2 signal flow. Made with Claude from the original Chrome WebAudio inspector graph."
+            variant="below"
+            aspect="video"
+          />
+          <p>The architecture:</p>
+          <ul>
+            <li><strong>FM core:</strong> the modulator feeds through a gain node (the "index" knob) into the carrier's frequency setting -- the same <code>.connect(param)</code> trick as the brook.</li>
+            <li><strong>Output chain:</strong> carrier --{">"} volume control --{">"} two highpass filters at 100 Hz --{">"} two lowpass filters at 7500 Hz --{">"} speakers. Two of each filter in series makes the cutoff sharper.</li>
+            <li><strong>Analyser:</strong> runs before the speakers that feeds the waveform visualizer on the page.</li>
+          </ul>
+          <h3>The Randomizer</h3>
+          <p>Every metronome tick, four parameters get independently updated:</p>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Parameter</th>
+                <th className="py-2">Range</th>
+                <th className="py-2">What it controls</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2">Carrier frequency</td><td>200–2500 Hz</td><td>The pitch of each chirp</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Modulator frequency</td><td>carrier × random(0–0.5)</td><td>The kind of overtones, tied to the carrier so it sounds coherent</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Modulation index</td><td>20–840</td><td>How intense/harsh each chirp is</td></tr>
+              <tr><td className="py-2">Output amplitude</td><td>0–0.3</td><td>How loud each tick is</td></tr>
+            </tbody>
+          </table>
+          <p>
+            For each parameter, <code>pickAction()</code> rolls dice to decide: <strong>slide</strong> smoothly to a new value, <strong>jump</strong> instantly, or <strong>hold</strong> (do nothing this tick). The mix of all three behaviors happening independently across four parameters is what gives it variability.
+          </p>
+          <h3>What I changed from Farnell's patch</h3>
+          <ul>
+            <li><strong>Carrier range narrowed to 200–2500 Hz</strong> (Farnell used 100–9100 Hz). His full range goes uncomfortably high for sustained listening in a browser.</li>
+            <li><strong>Lowpass filters at 7500 Hz instead of 10000 Hz</strong> -- similar reasoning to above.</li>
+            <li><strong>Modulation index kept close to Farnell's range (20–840).</strong> He specifically recommends pushing it high to get that harsh, glitchy, metallic quality that makes it sound machinelike.</li>
+            <li><strong>Slide/jump probabilities are user-adjustable via sliders.</strong> In Farnell's patch these are hardcoded. Making them adjustable lets you hear how the probabilities change R2's "personality" in real time.</li>
+            <li><strong>Added a waveform visualizer.</strong> An AnalyserNode taps the signal before the speakers and draws to a canvas at 60fps. You can actually see the modulation index changing.</li>
+          </ul>
+
+          <h2>Two Approaches to Synthesis</h2>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2"></th>
+                <th className="py-2">Part I (brook)</th>
+                <th className="py-2">Part II (R2D2)</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2 text-primary/70">Approach</td><td>Subtractive -- start with everything, filter away</td><td>FM -- start with pure tones, build up complexity</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2 text-primary/70">Source</td><td>Brown noise (all frequencies at once)</td><td>Two sine waves (simplest possible sound)</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2 text-primary/70">Interesting sounds from</td><td>Removing frequencies</td><td>Creating new frequencies via modulation</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2 text-primary/70">Expressiveness from</td><td>Wobbling the filter cutoff</td><td>Randomizing all the synth parameters</td></tr>
+              <tr><td className="py-2 text-primary/70">Shared trick</td><td colSpan={2}><code>.connect(param)</code> -- routing audio into a setting</td></tr>
+            </tbody>
+          </table>
+          <p>Both use modulation, but from opposite directions. Subtractive starts with everything and sculpts down. FM starts with almost nothing and builds up.</p>
+
+          <h2>Process</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 items-start">
+            <ProjectMedia
+              src={babelFigure}
+              alt="Farnell's R2D2 Pure Data patch with color-coded branches"
+              caption="Farnell's Fig 57.3 with color-coded signal branches, which helped me follow each path through the patch."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={babelNotebook}
+              alt="Process notes"
+              caption="Notes taken while working through the patch and planning my WebAudio implementation."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
+          <p>
+            The hardest part was not the code, but was reading Farnell's Pure Data patch (Fig 57.3). Annotating the textbook figure and taking notes alongside it was what made the structure legible -- it's just four copies of the same randomizer, each wired to a different synth parameter.
+          </p>
+          <p>
+            A subtlety I initially missed: the modulator's frequency in Farnell's patch is not random on its own; it's always a <em>ratio</em> of the carrier frequency (between 0 and 0.5×). My first version had them completely independent, and it sounded like random noise bursts instead of chirps. Tying the modulator to the carrier was the single biggest improvement.
+          </p>
+          <p>
+            I also learned that Pure Data uses <code>s</code> (send) and <code>r</code> (receive) boxes as invisible global variables -- the talk-speed slider doesn't have a visible wire to the randomizers, it broadcasts via a named channel.
+          </p>
+        </>
+      ),
+    },
     {
       slug: "multi-mode-synth",
       title: "Multi-Mode Synthesizer",
