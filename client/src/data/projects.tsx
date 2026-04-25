@@ -40,6 +40,10 @@ import sprawlCarve from "@/assets/sprawl/sprawlCarve.png";
 import sprawlSolder from "@/assets/sprawl/sprawlSolder.png";
 import sprawlInterior from "@/assets/sprawl/sprawlInterior.png";
 
+// seance images
+import seanceTitleImage from "@/assets/seance/seanceTitle.png";
+import seanceScreenImage from "@/assets/seance/seanceScreen.png";
+
 // (dis)order media
 import disorderGIF from "@/assets/(dis)order/disorder.gif";
 import disorderThumb from "@/assets/(dis)order/disorderThumb.png";
@@ -518,6 +522,112 @@ export const PROJECTS = {
     },
   ],
   sound: [
+    {
+      slug: "seance",
+      title: "séance",
+      date: "2026-04-25",
+      description: "A Markov chain composition engine trained on twenty gothic rock, darkwave, and post-punk MIDI files. Generates and plays infinite original melodies by learning transition probabilities between notes across artists like Bauhaus, Joy Division, The Cure, and Depeche Mode.",
+      tags: ["web audio", "markov chain", "algorithmic composition", "music", "javascript"],
+      imageUrl: seanceScreenImage,
+      content: (
+        <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // for the technical details and to run it yourself: <a href="https://github.com/Kysariin/seance" target="_blank" className="hover:underline text-primary">github.com/Kysariin/seance</a>
+          </p>
+
+          <h3>
+            <a href="https://kysariin.github.io/seance/" target="_blank">LAUNCH SÉANCE</a>
+          </h3>
+
+          <h2>Concept</h2>
+          <p>
+            I wanted to do something related to gothic music. I wanted to feed songs I like into an algorithm, and see what gets summoned. That's a séance.
+          </p>
+          <p>
+            These are bands I actually listen to. Joy Division is already in my portfolio via <a href="/project/disorder">(dis)order</a>. Bauhaus, The Cure, Depeche Mode, Siouxsie are all bands that my parents played for me my whole life. I wanted to know what a Markov chain trained on all of it would produce. I hoped it would make something that sounds like it comes from the same emotional world, but doesn't belong to any one artist.
+          </p>
+
+          <h2>Corpus Extraction</h2>
+          <p>
+            The first problem was getting note data out of MIDI files without a runtime MIDI parser in the browser. I (and Claude, as I've never done this extraction before) wrote <code>extract_corpus.py</code> using <code>mido</code> -- it parses each MIDI file, filters out drum tracks, picks the best melodic track by note density, and extracts a flat sequence of MIDI note numbers. The output gets baked directly into <code>corpus.js</code> as hardcoded JavaScript arrays. This doesn't allow for customization for the end-user, but downloading the repo will allow more customization. This was a goth-related project, so I wanted to have the corpus baked in already.
+          </p>
+          <p>
+            Twenty songs went in. The chain trains on all of them at once, and it doesn't know that note 60 came from "Bela Lugosi's Dead" versus "Disintegration." It only knows what came after it.
+          </p>
+
+          <h2>The Chain</h2>
+          <p>
+            <code>buildChain()</code> scans every sequence and builds a transition probability table. For 2nd order, the state is the last two notes joined as a string key (e.g., <code>"60,64"</code>) and each row is normalized to probabilities. <code>generate()</code> seeds from a random window in the corpus and probabilistically samples the next note. Dead-end states fall back to a random note from the vocabulary. Output plays in chunks of 128 notes, looping until stopped.
+          </p>
+
+          <h2>Order vs. Creativity</h2>
+          <p>
+            The most interesting thing I learned implementing this was that there's a tension between order and creativity in Markov chains.
+          </p>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Order</th>
+                <th className="py-2">State</th>
+                <th className="py-2">Result</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2">1st</td><td>1 previous note</td><td>Random and surprising -- melodically incoherent, could go anywhere</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">2nd</td><td>2 previous notes</td><td>The sweet spot in my opinion -- feels genuinely new but has the same vibe</td></tr>
+              <tr><td className="py-2">3rd</td><td>3 previous notes</td><td>Starts replaying fragments of the originals -- more accurate, BUT less original</td></tr>
+            </tbody>
+          </table>
+          <p>
+            2nd order is where séance lives. The higher the order, the more the chain "remembers," and eventually it stops composing and starts reciting. More context means more coherent output, right up until it's just retrieval.
+          </p>
+
+          <h2>Audio</h2>
+          <p>
+            The Web Audio signal chain in <code>audio.js</code> is built to match the aesthetic. Each generated note plays through:
+          </p>
+          <ul>
+            <li><strong>Sawtooth oscillator</strong> -- the darkest, most harmonically dense waveform. More darkwave-adjacent.</li>
+            <li><strong>ADSR envelope</strong> -- shapes the attack, decay, sustain, and release so notes breathe rather than click on and off.</li>
+            <li><strong>Lowpass filter</strong> -- eases the harshness of the sawtooth.</li>
+            <li><strong>Feedback delay</strong> -- common in post-punk production.</li>
+            <li><strong>Convolution reverb</strong> -- long and cavernous.</li>
+          </ul>
+
+          <h2>Training Corpus</h2>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Song</th>
+                <th className="py-2">Artist</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2">A Forest</td><td>The Cure</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Atmosphere</td><td>Joy Division</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Bela Lugosi's Dead</td><td>Bauhaus</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Black Celebration</td><td>Depeche Mode</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Black No. 1</td><td>Type O Negative</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Black Planet</td><td>Sisters of Mercy</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Christian Woman</td><td>Type O Negative</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Dark Entries</td><td>Bauhaus</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Disintegration</td><td>The Cure</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Hanging Garden</td><td>The Cure</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">In Your Room</td><td>Depeche Mode</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">It's a Sin</td><td>Pet Shop Boys</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Join Me in Death</td><td>HIM</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Killing Moon</td><td>Echo & the Bunnymen</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Love Like Blood</td><td>Killing Joke</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Not In Love (feat. Robert Smith)</td><td>Crystal Castles</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Sacrifice</td><td>Depeche Mode</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">She Sells Sanctuary</td><td>The Cult</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Spellbound</td><td>Siouxsie and the Banshees</td></tr>
+              <tr><td className="py-2">Stripped</td><td>Depeche Mode</td></tr>
+            </tbody>
+          </table>
+        </>
+      ),
+    },
     {
       slug: "babel",
       title: "babel",
