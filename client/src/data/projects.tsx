@@ -48,8 +48,238 @@ import seanceScreenImage from "@/assets/seance/seanceScreen.png";
 import disorderGIF from "@/assets/(dis)order/disorder.gif";
 import disorderThumb from "@/assets/(dis)order/disorderThumb.png";
 
+// mta pachinko images
+import mtaDesignDraft from "@/assets/mta/designdraft.jpg";
+import mtaBoardCut from "@/assets/mta/boardcutted.jpg";
+import mtaDryingRack from "@/assets/mta/drying_rack.jpg";
+import mtaSecuredSiderails from "@/assets/mta/secured_siderails.png";
+import mtaChuteWiring from "@/assets/mta/chutecollector_wiring.png";
+import mtaBallCollectorESP32 from "@/assets/mta/ballcollector_score_esp32.png";
+import mtaDuringDemo from "@/assets/mta/duringdemo.gif";
+import mtaDuringDemoStill from "@/assets/mta/duringdemo.png";
+import mtaPythonSim from "@/assets/mta/pythonsim.gif";
+import mtaBackOfBoard from "@/assets/mta/backofboard (finished).jpg";
+import mtaWiringDone from "@/assets/mta/wiring done.jpg";
+
 export const PROJECTS = {
   systems: [
+    {
+      slug: "mta-pachinko",
+      title: "MTA Pachinko",
+      date: "2026-04-26",
+      description: "A runtime-monitored pachinko machine themed around the New York City subway system. Three ESP32s coordinate over ESP-NOW to detect ball distribution imbalance across five chutes and physically redirect falling balls using stepper motor arms -- moving more sporadically as your score climbs.",
+      tags: ["ESP32", "ESP-NOW", "RTLola", "stepper motors", "physical computing"],
+      imageUrl: mtaDuringDemoStill,
+      content: (
+        <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // group project members: Lucia Chen, Siying Ding, Tramy Dong, Zoe Homan, Abby Neate, Linda Tang, and Kate Harris (me)
+          </p>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // no github repo available as it is private and contains sensitive information for ESP-NOW that shouldn't be publicly accessible
+          </p>
+
+          <h2>Concept</h2>
+          <p>
+            The MTA theme came together pretty naturally. We wanted something with a New York identity, and the subway's map having so many paths/dots (stops) lends itself well to a pachinko-type design. The five scoring chutes follow a classic pyramid style: 50, 100, 200, 100, 50 points, and the center chute is supposed to be the hardest to land (and most rewarding).
+          </p>
+          <p>
+            The core mechanic is that the machine fights back. Two stepper motor arms sit mid-board and physically deflect balls in real time based on where previous balls have landed. If too many balls are piling into the high-value center chute, the arms are supposed to redirect traffic away from it. And as your score grows, the behavior gets less rational and harder to anticipate.
+          </p>
+          <p>
+            The runtime monitoring angle comes from RTLola, a stream-based specification language used in aerospace for monitoring complex systems in real time. We wrote a <code>.lola</code> spec that watches the ball distribution across all five chutes, detects rising-edge imbalance events, and fires triggers that would tell the motors when and how to adjust. The ball collector ESP32 also streams CSV data over USB serial so the RTLola interpreter on a laptop can verify the logic independently.
+          </p>
+
+          <h2>Hardware</h2>
+          <ul>
+            <li>3× LilyGO TTGO T-Display (ESP32)</li>
+            <li>2× stepper motors + shaft couplers</li>
+            <li>Plywood (to make the game board)</li>
+            <li>3D printed 5-chute ball collector</li>
+            <li>3D printed arms</li>
+            <li>Copper tape (sensors)</li>
+            <li>Wires</li>
+          </ul>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Microcontroller</th>
+                <th className="py-2">Role</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2">Ball collector</td><td>Reads sensors, detects imbalance, broadcasts motor commands</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">Motor 0</td><td>Drives left deflector arm (chutes 0–1 vs. 2)</td></tr>
+              <tr><td className="py-2">Motor 1</td><td>Drives right deflector arm (chutes 2 vs. 3–4)</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Sensor wiring (ball collector)</h3>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Chute</th>
+                <th className="py-2">Points</th>
+                <th className="py-2">GPIO</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2">0 (leftmost)</td><td>50</td><td>13</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">1</td><td>100</td><td>17</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">2 (center)</td><td>200</td><td>25</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">3</td><td>100</td><td>26</td></tr>
+              <tr><td className="py-2">4 (rightmost)</td><td>50</td><td>27</td></tr>
+            </tbody>
+          </table>
+          <p>
+            Each sensor is a copper tape circuit: one strip to the GPIO pin (pulled HIGH internally), one strip to GND. A ball bridging the gap pulls the pin LOW and triggers the ISR.
+          </p>
+
+          <h3>Motor wiring</h3>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Signal</th>
+                <th className="py-2">GPIO</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10"><td className="py-2">IN1</td><td>2</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">IN2</td><td>15</td></tr>
+              <tr className="border-b border-border/10"><td className="py-2">IN3</td><td>13</td></tr>
+              <tr><td className="py-2">IN4</td><td>12</td></tr>
+            </tbody>
+          </table>
+
+          <h2>System Design</h2>
+          <p>
+            Each board's role is baked in at compile time via PlatformIO environments -- <code>ball_collector</code>, <code>motor_0</code>, <code>motor_1</code> — so the same <code>motor_controller.cpp</code> file flashes correctly to either motor board just by switching the environment, with <code>MY_CHANNEL</code> injected as a build flag.
+          </p>
+          <p>
+            The ESP-NOW protocol is designed so each motor only acts on commands meant for it. We added a <code>GAME_ID</code> string (<code>"MTA_PACHINKO_42"</code>) as a first-field check so other groups' ESP-NOW traffic in the same room wouldn't interfere.
+          </p>
+          <p>
+            The motor angle computation lives entirely on the ball collector side. It computes <code>target_angle[0]</code> and <code>target_angle[1]</code> before broadcasting, so the motor boards just execute whatever angle they receive. A score-based multiplier ramps the response from 1× at the start of the game to 3.5× at high scores, and a jitter term grows proportionally — so early on the arms make small, rational corrections, and later they become genuinely unpredictable.
+          </p>
+          <p>
+            We also wrote a Python simulation (<code>sim/simulate.py</code>) that runs the full algorithm without any hardware — ball generation, imbalance detection, angle computation, score scaling — which was helpful to determine if the issue in our project was the code or the hardware.
+          </p>
+          <ProjectMedia
+            src={mtaPythonSim}
+            alt="Python simulation of the pachinko algorithm"
+            caption="The Python sim running the full algorithm — ball generation, imbalance detection, and motor angle computation without any hardware."
+            variant="below"
+            aspect="video"
+          />
+
+          <h2>Build</h2>
+          <ProjectMedia
+            src={mtaDuringDemo}
+            alt="MTA Pachinko demo"
+            caption="Demo of the machine during the final showcase."
+            variant="below"
+            aspect="video"
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 items-start">
+             <ProjectMedia
+              src={mtaBoardCut}
+              alt="Board cut with 3D printed chute collector"
+              caption="The arched plywood board right after cutting, with the 3D printed 5-chute ball collector sitting at the bottom."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={mtaDesignDraft}
+              alt="Early design draft with MTA token layout"
+              caption="Early design mock showing the subway line token placement and nail positions."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 items-start">
+            <ProjectMedia
+              src={mtaDryingRack}
+              alt="Board drying on rack after painting"
+              caption="The board drying after painting. The nail placement was planned around the token positions."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={mtaSecuredSiderails}
+              alt="Secured side rails"
+              caption="Gray painted side rails screwed to the board edges to contain the balls."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 my-8 items-start">
+            <ProjectMedia
+              src={mtaChuteWiring}
+              alt="Chute collector wiring"
+              caption="The back of the 3D printed chute collector with the sensor wires routed through the integrated holes."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={mtaWiringDone}
+              alt="Completed wiring of the chute collector"
+              caption="Completed wiring on the back of the chute collector."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={mtaBallCollectorESP32}
+              alt="Ball collector ESP32 showing score: 0"
+              caption="The TTGO T-Display running the ball collector firmware, showing the score display and live per-channel counts."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 items-start">
+            <ProjectMedia
+              src={mtaBackOfBoard}
+              alt="Back of the finished board"
+              caption="The back of the finished board, showing how the wiring and ESP32s are mounted."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+            <ProjectMedia
+              src={mtaDuringDemo}
+              alt="During demo day"
+              caption="The board during demo day — MTA tokens as pegs, the motor arm visible mid-board."
+              variant="below"
+              aspect="video"
+              className="my-0"
+            />
+          </div>
+
+          <h2>What Didn't Work</h2>
+          <p>
+            The copper tape sensors never reliably triggered during the demo. Our best guess is a wiring issue. Since the circuit depends on a ball bridging two strips to pull a GPIO pin LOW, and something in the chain wasn't making consistent contact. The motors had nothing to respond to, and even just trying to get a print from the chute collecting ESP-32 without communicating via ESP-NOW was fruitless. The only thing that registered as "scoring" a point is when any (yes, any) wire was plugged into and then plugged out of the peg in the breadboard that connected to GROUND.
+          </p>
+          <p>
+            The motor code worked in isolation -- we verified the stepper logic with a standalone test sketch -- but since the ball collector never sent a valid broadcast, the motors sat idle.
+          </p>
+
+          <h2>Reflection</h2>
+          <p>
+            This was probably the most complex project we've worked on in this class in terms of coordination and moving parts. We had three ESP-32s with different roles, a shared wireless protocol, and a physical machine all built simultaneously across a team of seven. We are genuinely proud of our effort and what got to work, though. The error was localized to one physical interface that we ran out of time to properly debug.
+          </p>
+          <p>
+            The board looks great though. The MTA theming came together better than we had expected!
+          </p>
+        </>
+      ),
+    },
     {
       slug: "sprawl",
       title: "sprawl",
