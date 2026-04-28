@@ -253,7 +253,7 @@ export const PROJECTS = {
               className="my-0"
             />
             <ProjectMedia
-              src={mtaDuringDemo}
+              src={mtaDuringDemoStill}
               alt="During demo day"
               caption="The board during demo day — MTA tokens as pegs, the motor arm visible mid-board."
               variant="below"
