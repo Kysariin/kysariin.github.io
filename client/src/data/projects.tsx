@@ -65,7 +65,7 @@ export const PROJECTS = {
   systems: [
     {
       slug: "mta-pachinko",
-      title: "MTA Pachinko",
+      title: "mta pachinko",
       date: "2026-04-26",
       description: "A runtime-monitored pachinko machine themed around the New York City subway system. Three ESP32s coordinate over ESP-NOW to detect ball distribution imbalance across five chutes and physically redirect falling balls using stepper motor arms -- moving more sporadically as your score climbs.",
       tags: ["ESP32", "ESP-NOW", "RTLola", "stepper motors", "physical computing"],
