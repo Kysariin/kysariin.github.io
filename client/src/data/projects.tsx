@@ -184,7 +184,7 @@ export const PROJECTS = {
              <ProjectMedia
               src={mtaBoardCut}
               alt="Board cut with 3D printed chute collector"
-              caption="The arched plywood board right after cutting, with the 3D printed 5-chute ball collector sitting at the bottom."
+              caption="The arched plywood board right after cutting, with the 3D printed 5-chute ball collector being held at the bottom."
               variant="below"
               aspect="video"
               className="my-0"
@@ -192,7 +192,7 @@ export const PROJECTS = {
             <ProjectMedia
               src={mtaDesignDraft}
               alt="Early design draft with MTA token layout"
-              caption="Early design mock showing the subway line token placement and nail positions."
+              caption="Early design mock showing the subway line icon placement and nail positions."
               variant="below"
               aspect="video"
               className="my-0"
@@ -203,7 +203,7 @@ export const PROJECTS = {
             <ProjectMedia
               src={mtaDryingRack}
               alt="Board drying on rack after painting"
-              caption="The board drying after painting. The nail placement was planned around the token positions."
+              caption="The board drying after painting. The nail placement was planned around the icon positions."
               variant="below"
               aspect="video"
               className="my-0"
@@ -211,7 +211,7 @@ export const PROJECTS = {
             <ProjectMedia
               src={mtaSecuredSiderails}
               alt="Secured side rails"
-              caption="Gray painted side rails screwed to the board edges to contain the balls."
+              caption="White painted side rails screwed to the board edges to contain the balls."
               variant="below"
               aspect="video"
               className="my-0"
@@ -255,7 +255,7 @@ export const PROJECTS = {
             <ProjectMedia
               src={mtaDuringDemoStill}
               alt="During demo day"
-              caption="The board during demo day — MTA tokens as pegs, the motor arm visible mid-board."
+              caption="The board during demo day -- MTA tokens as pegs, the motor arm visible mid-board."
               variant="below"
               aspect="video"
               className="my-0"
