@@ -264,10 +264,13 @@ export const PROJECTS = {
 
           <h2>What Didn't Work</h2>
           <p>
-            The copper tape sensors never reliably triggered during the demo. Our best guess is a wiring issue. Since the circuit depends on a ball bridging two strips to pull a GPIO pin LOW, and something in the chain wasn't making consistent contact. The motors had nothing to respond to, and even just trying to get a print from the chute collecting ESP-32 without communicating via ESP-NOW was fruitless. The only thing that registered as "scoring" a point is when any (yes, any) wire was plugged into and then plugged out of the peg in the breadboard that connected to GROUND.
+            The copper tape sensors never reliably triggered during the demo. Our best guess is a wiring issue. Since the circuit depends on a ball bridging two strips to pull a GPIO pin LOW, something in the chain wasn't making consistent contact. The motors had nothing to respond to, and even just trying to get a print from the chute collecting ESP32 without communicating via ESP-NOW was fruitless. The only thing that registered as "scoring" a point was when any wire was plugged into and then pulled out of the peg in the breadboard connected to GND.
           </p>
           <p>
-            The motor code worked in isolation -- we verified the stepper logic with a standalone test sketch -- but since the ball collector never sent a valid broadcast, the motors sat idle.
+            The motors themselves were also an issue on demo day -- the motors were spinning, but the shaft couplers must've shifted in transport, so the physical arms were no longer turning with them. These components had been working correctly the previous night and that morning, which was frustrating. The motor code itself was verified working with a standalone test sketch, and the ESP-NOW broadcast logic was sound -- the mechanical connection between the motor shaft and the arm just didn't survive being moved.
+          </p>
+          <p>
+            So in a way we had two separate failure points: the sensor circuit never feeding data in, and the physical coupling not translating motor movement into arm movement.
           </p>
 
           <h2>Reflection</h2>
