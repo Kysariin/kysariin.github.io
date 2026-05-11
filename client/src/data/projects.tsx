@@ -48,6 +48,13 @@ import seanceScreenImage from "@/assets/seance/seanceScreen.png";
 import disorderGIF from "@/assets/(dis)order/disorder.gif";
 import disorderThumb from "@/assets/(dis)order/disorderThumb.png";
 
+// rotom image
+import rotomHeroImage from "@/assets/rotom/squirtle_charmander.png";
+
+// utagoe images
+import utagoeHeroImage from "@/assets/utagoe/utagoe_hero.png";
+import utagoeUiImage from "@/assets/utagoe/utagoe_ui.png";
+
 // mta pachinko images
 import mtaDesignDraft from "@/assets/mta/designdraft.jpg";
 import mtaBoardCut from "@/assets/mta/boardcutted.jpg";
@@ -63,6 +70,106 @@ import mtaWiringDone from "@/assets/mta/wiring done.jpg";
 
 export const PROJECTS = {
   systems: [
+    {
+      slug: "rotom",
+      title: "rotom",
+      date: "2026-05-11",
+      description: "A wireless two-player Pokémon battle system built on a pair of ESP32s communicating over ESP-NOW. Implements real stat stages, a Gen 1 type chart, and sprite rendering on the TTGO's 240×135 TFT.",
+      tags: ["ESP32", "ESP-NOW", "TFT display", "embedded C++", "physical computing"],
+      imageUrl: rotomHeroImage,
+      content: (
+        <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // for the technical details: <a href="https://github.com/Kysariin/pokemonbattle" target="_blank" className="hover:underline text-primary">github.com/Kysariin/pokemonbattle</a>
+          </p>
+          <h2>Concept</h2>
+          <p>
+            The idea came from a very specific memory of me and my brother sitting in the back of a car as a kid, on a highway in the middle of nowhere, and battling each other in Pokémon on our DS's. The two handhelds just found each other. Now that I somewhat understood how the technology worked, I wanted to implement it myself.
+          </p>
+          <p>
+            ESP-NOW is a connectionless peer-to-peer protocol built into the ESP32 that lets two boards communicate directly over radio without a router or shared network. When I learned about it in class I immediately thought, "Oh, this is how PictoChat must have worked," which prompted me to then think about other wireless DS communication methods (Pokémon).
+          </p>
+          <p>
+            From there I tried to implement the battle system correctly. That meant a real stat stage system (the ±1/2/3 attack and defense modifiers that stack across turns), a type effectiveness chart (accurate to Gen 1), and a move selection interface where you can read what a move does before committing to it. I also wanted the battle state to stay in sync across both boards -- both devices run the same damage formula on the same inputs independently, which felt cleaner to implement.
+          </p>
+          <p>
+            I named it after Rotom, which possesses electronics and bends them toward something unintended. Obviously this has been intended before (Pokémon battles on DS existed), but Rotom breathes new life into electronics, and the ESP-32s feel more like handheld games now to me. Thus I find it fitting.
+          </p>
+          <p>
+            I found the sprites on PokeAPI. The TTGO's 240×135 TFT can push 16-bit RGB565 bitmaps quickly enough to show each Pokémon's front and back sprite during battle, positioned the way they actually appear in the games. After looking for different approaches for this, I had Claude help me translate the pngs into C arrays so they could be displayed.
+          </p>
+
+          <h2>Hardware</h2>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Component</th>
+                <th className="py-2">Quantity</th>
+                <th className="py-2">Role</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr><td className="py-2">LilyGO TTGO T-Display (ESP32)</td><td>2</td><td>One per player -- handles input, display, and wireless</td></tr>
+            </tbody>
+          </table>
+          <p>Each board uses its two built-in physical buttons.</p>
+
+          <h2>System Design</h2>
+          <p>
+            The game runs across three phases: selection, battle, and game over. In selection, both players scroll through a roster of four Pokémon and lock in a choice. Once both boards confirm, the battle starts automatically.
+          </p>
+          <p>
+            During battle, moves are transmitted as a move index (0–3), never as damage values. Each board looks up the move from its local copy of the shared roster and runs the same damage formula, which accounts for the move's base power, both players' current stat stages, and the type matchup between the move and the defending Pokémon. The type chart covers all relevant interactions for the roster: Water beats Fire, Fire beats Grass, Grass beats Water, Electric beats Water. Super effective and not very effective hits are noted in the status line.
+          </p>
+          <p>
+            Stat stages accumulate across turns and feed directly into the damage formula, so the effect of something like Tail Whip is visible in the numbers over time rather than just described.
+          </p>
+          <p>The packet structure is minimal:</p>
+          <pre><code>{`typedef struct {
+  uint8_t type;   // PKT_SELECT, PKT_MOVE, or PKT_RESET
+  uint8_t data;   // pokemon index or move index
+  uint8_t seq;    // for duplicate detection
+} BattlePacket;`}</code></pre>
+
+          <h2>Build</h2>
+          <ProjectMedia
+            src={rotomHeroImage}
+            alt="Squirtle vs. Charmander battle on two TTGO displays"
+            caption="Squirtle vs. Charmander — both boards side by side during a live battle."
+            variant="below"
+            aspect="video"
+          />
+          <div className="relative w-full aspect-video my-8 border border-border/40 rounded-md overflow-hidden bg-card/30">
+            <iframe
+              src="https://www.youtube.com/embed/yGg6aisS4MQ"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              className="absolute top-0 left-0 w-full h-full"
+              title="rotom battle demo"
+            ></iframe>
+          </div>
+
+          <h2>Difficulties</h2>
+          <p>
+            The biggest early bug was a phantom button press on boot. GPIO 0 is the ESP32's bootloader pin and reads LOW briefly at startup, which my code was interpreting as input. Device 1 would fire a move at the beginning of every battle before the opponent had even loaded. A two-second <code>millis()</code> guard at the top of the loop fixed it by ignoring all input until the boot sequence settled.
+          </p>
+          <p>
+            Related to that: I originally had the confirm action mapped to GPIO 0, which meant spamming it during the opponent's turn could push the chip into bootloader mode and crash the board. Swapping the roles (GPIO 0 to scroll, GPIO 35 to confirm) fixed it since GPIO 35 has no special boot behavior.
+          </p>
+          <p>
+            The sprite colors were also wrong for a while. My conversion script was producing visibly off colors -- reds appearing orange, blues going purple. <code>TFT_eSPI</code> expects RGB565 values with swapped bytes, and the script wasn't doing that. One extra step (Claude) in the conversion fixed it.
+          </p>
+          <p>
+            The enclosure is the honest gap in this project. I'd never used 3D printing software before and my attempts were for naught. I didn't have time to fabricate one, so both boards are bare. The software is complete, but the physical experience is pretty far from what I had in mind originally. I believe given the time constraints and the time of year this was done in (finals), if I had worked with another person or had more time I could have created an enclosure.
+          </p>
+
+          <h2>Reflection</h2>
+          <p>
+            This was probably my favorite project of the semester to actually build, mostly because the technical side had a clear creative reason behind it. The stat stages and type system weren't necessarily required, but leaving them out would have made the battles feel arbitrary. Having them in means that what happens on screen is the result of decisions made across multiple turns, which is the part that makes it feel like something cool rather than *just* a tech demo.
+          </p>
+        </>
+      ),
+    },
     {
       slug: "mta-pachinko",
       title: "mta pachinko",
@@ -755,6 +862,330 @@ export const PROJECTS = {
     },
   ],
   sound: [
+    {
+      slug: "utagoe",
+      title: "utagoe",
+      date: "2026-05-11",
+      description:
+        "A browser-based formant synthesis engine that takes Japanese syllables in romaji and a melody in note names, and produces a synthetic voice that sings them.",
+      tags: [
+        "web audio",
+        "formant synthesis",
+        "speech synthesis",
+        "javascript",
+        "computational sound",
+      ],
+      imageUrl: utagoeHeroImage,
+      content: (
+        <>
+          <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
+            // source: <a href="https://github.com/Kysariin/utagoe_synthesizer" target="_blank">github.com/Kysariin/utagoe_synthesizer</a>
+          </p>
+
+          <h2>Concept</h2>
+          <p>Earlier in the semester, a Hatsune Miku song showed up on the lecture slides. I have been listening to Vocaloid for over ten years, so seeing it in an academic context was genuinely exciting. When the free-choice final project was announced, I knew immediately what I wanted to build.</p>
+          <p>utagoe shinsesaizaa (歌声シンセサイザー, literally "singing voice synthesizer") is a browser-based formant synthesis engine that takes Japanese syllables in romaji and a melody in note names, and produces a synthetic voice that sings them.</p>
+          <p>Vocaloid itself uses recordings of a real voice actress (Saki Fujita, in Miku's case) processed through Yamaha's proprietary engine. What I built is the older, more mathematical version of the same idea (the kind of synthesis that predates recorded voice banks). It sounds the way it sounds because I've discovered that formant synthesis is unfortunately hard, and the robotic quality is the honest result of building this from scratch in a browser. I have a lot more respect for the MacOS TTS I grew up hearing.</p>
+          <p>I chose Japanese specifically because its phonetically much simpler than English. Five vowels that always sound the same, and almost every syllable is just a consonant followed by one of those five vowels. English would have been a nightmare.</p>
+
+          <h2>Signal Chain</h2>
+          <p>The synthesizer is built around the <strong>source-filter model of speech</strong>: the voice is produced by a buzzing source (vocal cords) shaped by a resonant filter system (vocal tract). Different vowel sounds come from different resonant peaks called formants.</p>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Component</th>
+                <th className="py-2">WebAudio Node</th>
+                <th className="py-2">Role</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10">
+                <td className="py-2">Glottal source</td>
+                <td>
+                  Custom <code>PeriodicWave</code> oscillator
+                </td>
+                <td>Approximates vocal cord vibration</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">Pre-emphasis</td>
+                <td>
+                  <code>BiquadFilter</code> (highshelf +8dB @ 1kHz)
+                </td>
+                <td>Compensates for source rolloff</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">Formant bank</td>
+                <td>
+                  4× <code>BiquadFilter</code> (bandpass) in parallel
+                </td>
+                <td>Shapes source into vowel sounds</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">Formant gains</td>
+                <td>
+                  4× <code>GainNode</code>
+                </td>
+                <td>Per-formant amplitude weighting</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">Dry mix</td>
+                <td>
+                  <code>GainNode</code>
+                </td>
+                <td>Preserves voice body between formant peaks</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">Noise source</td>
+                <td>
+                  <code>BufferSource</code> (white noise) →{" "}
+                  <code>BiquadFilter</code>
+                </td>
+                <td>Fricatives and plosive bursts</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">Breath noise</td>
+                <td>
+                  <code>BufferSource</code> → highpass{" "}
+                  <code>BiquadFilter</code>
+                </td>
+                <td>Continuous aspiration</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">Reverb</td>
+                <td>
+                  <code>ConvolverNode</code>
+                </td>
+                <td>Room ambience</td>
+              </tr>
+              <tr>
+                <td className="py-2">Limiter</td>
+                <td>
+                  <code>DynamicsCompressor</code>
+                </td>
+                <td>Output ceiling</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            Acoustically, formants
+            are independent resonances that don't interact, so routing the
+            source into each filter simultaneously and summing the outputs is
+            the correct model. This was something I learned partway through the
+            project; the first version used series peaking EQ filters and
+            sounded much worse.
+          </p>
+          <p>
+            The glottal source uses <code>createPeriodicWave</code> with
+            harmonics falling at 1/n^1.2 — slightly flatter rolloff than a
+            sawtooth (1/n) and closer to a real glottal pulse. Two detuned
+            copies run in parallel at 1.000× and 1.004× the target pitch.
+          </p>
+          <p>
+            There is also a <strong>voice mode</strong> that swaps the synthetic
+            oscillator for a recorded vowel sample, pitch-shifted via{" "}
+            <code>playbackRate</code> and run through the same formant filter
+            chain.
+          </p>
+
+          <h2>Vowel Formant Targets</h2>
+          <p>
+            Five Japanese vowels, tuned for a bright feminine voice. Q values
+            are frequency-dependent -- lower formants are broader, higher
+            formants narrower.
+          </p>
+          <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
+            <thead>
+              <tr className="text-primary/70 border-b border-border/40 text-left">
+                <th className="py-2">Vowel</th>
+                <th className="py-2">F1</th>
+                <th className="py-2">F2</th>
+                <th className="py-2">F3</th>
+                <th className="py-2">F4</th>
+              </tr>
+            </thead>
+            <tbody className="text-foreground/80">
+              <tr className="border-b border-border/10">
+                <td className="py-2">/a/</td>
+                <td>950 Hz</td>
+                <td>1400 Hz</td>
+                <td>2800 Hz</td>
+                <td>3400 Hz</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">/i/</td>
+                <td>300 Hz</td>
+                <td>2800 Hz</td>
+                <td>3400 Hz</td>
+                <td>4000 Hz</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">/u/</td>
+                <td>380 Hz</td>
+                <td>950 Hz</td>
+                <td>2800 Hz</td>
+                <td>3400 Hz</td>
+              </tr>
+              <tr className="border-b border-border/10">
+                <td className="py-2">/e/</td>
+                <td>700 Hz</td>
+                <td>2600 Hz</td>
+                <td>3100 Hz</td>
+                <td>3700 Hz</td>
+              </tr>
+              <tr>
+                <td className="py-2">/o/</td>
+                <td>550 Hz</td>
+                <td>950 Hz</td>
+                <td>2800 Hz</td>
+                <td>3400 Hz</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            Transitions between vowels are scheduled with{" "}
+            <code>setTargetAtTime</code> at a time constant of 25ms. This is a
+            simplified model of coarticulation, which is the way your mouth physically
+            glides between phoneme positions rather than snapping.
+          </p>
+
+          <h2>Consonant Modeling</h2>
+          <p>
+            Going into this project I did not know what a fricative was. I came
+            out understanding that consonants are primarily identified by how{" "}
+            <strong>formants move</strong>, not by the sound of the consonant
+            itself. Though I would still like to make sure Claude is properly credited, for this amount of work would be impossible for someone with as little knowledge going into this as I did.
+          </p>
+          <p>The system handles six consonant types:</p>
+          <p>
+            <strong>Plosives (/k/, /t/, /b/, /d/, /g/)</strong> -- silence
+            during closure, broadband noise burst, then an F2 locus sweep at
+            vowel onset. The F2 locus is the frequency F2 appears to originate
+            from, which is the primary cue your brain uses to distinguish /k/
+            from /t/ from /p/. /k/ has a low locus (800Hz), /t/ a higher one
+            (1800Hz).
+          </p>
+          <p>
+            <strong>Fricatives (/s/, /sh/, /h/)</strong> -- voice gates off,
+            narrow-band noise takes over at the characteristic frequency of the
+            fricative. /s/ is high and tight (6000Hz, Q=10), /sh/ is broader
+            and lower (3200Hz, Q=7).
+          </p>
+          <p>
+            <strong>Nasals (/m/, /n/)</strong> -- at singing pitch, nasal
+            resonances are below the fundamental, so a direct acoustic model
+            doesn't work. Instead: voice gates low to simulate lip closure,
+            upper formants suppress, and F1+F2 sweep up from a bilabial release
+            position at vowel onset (the same locus mechanism as plosives).
+          </p>
+          <p>
+            <strong>Tap (/r/)</strong> -- Japanese /r/ is an alveolar tap [ɾ],
+            not an English /r/. It's a 20ms tongue contact: a brief amplitude
+            dip with a transient F1 lowering, then immediate vowel onset.
+          </p>
+          <p>
+            <strong>Glides (/w/, /y/)</strong> -- fully voiced, F1 and F2 start
+            at consonant positions and sweep into the vowel. /w/ starts both
+            formants low (bilabial rounding), /y/ starts with low F1 and high
+            F2 (the /i/ palatal position).
+          </p>
+
+          <h2>Features</h2>
+          <ul>
+            <li>Romaji syllable input with real-time per-syllable note grid</li>
+            <li>
+              Preloaded songs (World is Mine, Melt, Sakura, Rolling Girl,
+              Twinkle Twinkle)
+            </li>
+            <li>Synth / Voice mode toggle</li>
+            <li>Tempo control</li>
+            <li>Real-time FFT spectrum visualizer showing formants</li>
+            <li>
+              Note grid highlights in sync with playback via{" "}
+              <code>setTimeout</code> + AudioContext timeline
+            </li>
+          </ul>
+
+          <h2>Demo</h2>
+          <ProjectMedia
+            src={utagoeUiImage}
+            alt="utagoe synthesizer UI"
+            caption="The utagoe interface — romaji input grid, note assignment, and real-time FFT spectrum visualizer."
+            variant="below"
+            aspect="video"
+          />
+          <div className="relative w-full aspect-video my-8 border border-border/40 rounded-md overflow-hidden bg-card/30">
+            <iframe
+              src="https://www.youtube.com/embed/GSddzD1q-Cs"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              className="absolute top-0 left-0 w-full h-full"
+              title="utagoe demo"
+            ></iframe>
+          </div>
+
+          <h2>What Didn't Work</h2>
+          <p>
+            <strong>Consonant intelligibility</strong> is the weakest part of
+            the synthesizer. Fricatives and plosives are audible and
+            distinguishable in controlled, VERY FOCUSED listening, but in a fast musical
+            phrase they can blur. The core tension is that the voiced source is
+            loud relative to the noise burst, so short consonants get masked. I
+            spent a significant portion of this project debugging AudioParam
+            scheduling conflicts -- <code>cancelAndHoldAtTime</code> is the
+            correct call before rescheduling a parameter, not{" "}
+            <code>cancelScheduledValues</code>, and getting that wrong causes
+            subtle timing artifacts that are hard to trace.
+          </p>
+          <p>
+            <strong>Nasals at high pitches</strong> never fully convinced me.
+            At G#5 and above, the /m/ sounds more like a quiet onset
+            than a genuine nasal murmur.
+          </p>
+          <p>
+            <strong>Formant synthesis above C6</strong> is limited -- when the
+            fundamental approaches F1, the filters can't independently shape the
+            lower resonances and the voice loses definition. High notes sound
+            progressively thinner and more flute-like rather than voice-like.
+          </p>
+
+          <h2>Reflections</h2>
+          <p>
+            The thing I expected to be the hard part -- getting vowels to sound
+            like vowels -- turned out to be relatively doable once the
+            parallel filter topology was in place. The thing I did not expect --
+            consonant modeling -- was substantially harder and required learning a
+            lot of phonetics I had no background in. It felt like harsh sounds would've been easier to make than sustained vowels.
+          </p>
+          <p>
+            I also think formant synthesis is genuinely underrated as a browser
+            audio project. The source-filter model connects directly to
+            subtractive synthesis (the same conceptual model as filters shaping
+            noise), the scheduling precision of the AudioContext timeline is
+            essential and interesting to work with, and the output is weird
+            enough to be compelling in its own right. It doesn't sound like
+            Miku. One thing I'd really like to have added is a way to have rhythms. Right now every note plays for the same amount of time, and is very evenly distributed.
+          </p>
+
+          <h2>Related Work</h2>
+          <p>
+            <strong>Pink Trombone</strong> (Neil Thapen) -- articulatory vocal tract synthesizer in WebAudio, computes formants from physical geometry in real time rather than a lookup table. Much more continuous and natural-sounding. Designed for gestural control rather than sequenced output.
+          </p>
+          <p>
+            <strong>meSing</strong> (David Su) -- runs text-to-speech through a
+            WebAudio vocoder to impose pitch. Sidesteps synthesis entirely by
+            starting with real speech. The architecture that meSing uses
+            (cwilso's Vocoder) is worth reading if you want to understand what a
+            different approach to the same problem looks like.
+          </p>
+          <p>
+            <strong>Sinsy / NNSVS / DiffSinger</strong> -- statistical and
+            neural network-based singing synthesis. Dramatically better output,
+            but not easily deployable in a browser without WebAssembly
+            compilation.
+          </p>
+        </>
+      ),
+    },
     {
       slug: "seance",
       title: "séance",
