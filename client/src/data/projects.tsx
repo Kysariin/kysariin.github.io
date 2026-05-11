@@ -54,6 +54,7 @@ import rotomHeroImage from "@/assets/rotom/squirtle_charmander.png";
 // utagoe images
 import utagoeHeroImage from "@/assets/utagoe/utagoe_hero.png";
 import utagoeUiImage from "@/assets/utagoe/utagoe_ui.png";
+import utagoeAudio from "@/assets/utagoe/webaudiomap.png";
 
 // mta pachinko images
 import mtaDesignDraft from "@/assets/mta/designdraft.jpg";
@@ -879,17 +880,52 @@ export const PROJECTS = {
       content: (
         <>
           <p className="font-mono text-[11px] text-primary/70 tracking-tight lowercase mb-8">
-            // source: <a href="https://github.com/Kysariin/utagoe_synthesizer" target="_blank">github.com/Kysariin/utagoe_synthesizer</a>
+            {"// source: "}
+            <a
+              href="https://github.com/Kysariin/utagoe_synthesizer"
+              target="_blank"
+            >
+              github.com/Kysariin/utagoe_synthesizer
+            </a>
           </p>
 
           <h2>Concept</h2>
-          <p>Earlier in the semester, a Hatsune Miku song showed up on the lecture slides. I have been listening to Vocaloid for over ten years, so seeing it in an academic context was genuinely exciting. When the free-choice final project was announced, I knew immediately what I wanted to build.</p>
-          <p>utagoe shinsesaizaa (歌声シンセサイザー, literally "singing voice synthesizer") is a browser-based formant synthesis engine that takes Japanese syllables in romaji and a melody in note names, and produces a synthetic voice that sings them.</p>
-          <p>Vocaloid itself uses recordings of a real voice actress (Saki Fujita, in Miku's case) processed through Yamaha's proprietary engine. What I built is the older, more mathematical version of the same idea (the kind of synthesis that predates recorded voice banks). It sounds the way it sounds because I've discovered that formant synthesis is unfortunately hard, and the robotic quality is the honest result of building this from scratch in a browser. I have a lot more respect for the MacOS TTS I grew up hearing.</p>
-          <p>I chose Japanese specifically because its phonetically much simpler than English. Five vowels that always sound the same, and almost every syllable is just a consonant followed by one of those five vowels. English would have been a nightmare.</p>
+          <p>
+            Earlier in the semester, a Hatsune Miku song showed up on the
+            lecture slides. I have been listening to Vocaloid for over ten
+            years, so seeing it in an academic context was genuinely exciting.
+            When the free-choice final project was announced, I knew immediately
+            what I wanted to build.
+          </p>
+          <p>
+            utagoe shinsesaizaa (歌声シンセサイザー, literally "singing voice
+            synthesizer") is a browser-based formant synthesis engine that takes
+            Japanese syllables in romaji and a melody in note names, and
+            produces a synthetic voice that sings them.
+          </p>
+          <p>
+            Vocaloid itself uses recordings of a real voice actress (Saki
+            Fujita, in Miku's case) processed through Yamaha's proprietary
+            engine. What I built is the older, more mathematical version of the
+            same idea (the kind of synthesis that predates recorded voice
+            banks). It sounds the way it sounds because I've discovered that formant synthesis is
+            unfortunately hard, and the robotic quality is the honest result of
+            building this from scratch in a browser. I have a lot more respect for the MacOS TTS I grew up hearing.
+          </p>
+          <p>
+            I chose Japanese specifically because its phonetically much simpler than English. Five vowels that always sound the same, and
+            almost every syllable is just a consonant followed by one of those
+            five vowels. English would have been a nightmare.
+          </p>
 
           <h2>Signal Chain</h2>
-          <p>The synthesizer is built around the <strong>source-filter model of speech</strong>: the voice is produced by a buzzing source (vocal cords) shaped by a resonant filter system (vocal tract). Different vowel sounds come from different resonant peaks called formants.</p>
+          <p>
+            The synthesizer is built around the{" "}
+            <strong>source-filter model of speech</strong>: the voice is
+            produced by a buzzing source (vocal cords) shaped by a resonant
+            filter system (vocal tract). Different vowel sounds come from
+            different resonant peaks called formants.
+          </p>
           <table className="min-w-full text-sm font-mono border-t border-border/40 mt-4 mb-8">
             <thead>
               <tr className="text-primary/70 border-b border-border/40 text-left">
@@ -1122,6 +1158,13 @@ export const PROJECTS = {
               title="utagoe demo"
             ></iframe>
           </div>
+          <ProjectMedia
+            src={utagoeAudio}
+            alt="utagoe WebAudio graph"
+            caption="The utagoe WebAudio graph."
+            variant="below"
+            aspect="video"
+          />
 
           <h2>What Didn't Work</h2>
           <p>
