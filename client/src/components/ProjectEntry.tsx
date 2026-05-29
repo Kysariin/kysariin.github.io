@@ -52,7 +52,7 @@ export function ProjectEntry({ slug, category, title, date, description, tags, i
       </p>
 
       <div className="pt-2">
-        <Link href={`/project/${category}/${slug}`}>
+        <Link href={`/${category}/${slug}`}>
           <a className="text-[11px] font-mono text-primary hover:underline lowercase tracking-widest">
             view_details →
           </a>

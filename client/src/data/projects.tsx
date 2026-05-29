@@ -70,7 +70,7 @@ import mtaBackOfBoard from "@/assets/mta/backofboard (finished).jpg";
 import mtaWiringDone from "@/assets/mta/wiring done.jpg";
 
 export const PROJECTS = {
-  systems: [
+  hardware: [
     {
       slug: "rotom",
       title: "rotom",
@@ -862,7 +862,7 @@ export const PROJECTS = {
       ),
     },
   ],
-  sound: [
+  audio: [
     {
       slug: "utagoe",
       title: "utagoe",
@@ -1251,7 +1251,7 @@ export const PROJECTS = {
             I wanted to do something related to gothic music. I wanted to feed songs I like into an algorithm, and see what gets summoned. That's a séance.
           </p>
           <p>
-            These are bands I actually listen to. Joy Division is already in my portfolio via <a href="/project/disorder">(dis)order</a>. Bauhaus, The Cure, Depeche Mode, Siouxsie are all bands that my parents played for me my whole life. I wanted to know what a Markov chain trained on all of it would produce. I hoped it would make something that sounds like it comes from the same emotional world, but doesn't belong to any one artist.
+            These are bands I actually listen to. Joy Division is already in my portfolio via <a href="/hardware/disorder">(dis)order</a>. Bauhaus, The Cure, Depeche Mode, Siouxsie are all bands that my parents played for me my whole life. I wanted to know what a Markov chain trained on all of it would produce. I hoped it would make something that sounds like it comes from the same emotional world, but doesn't belong to any one artist.
           </p>
 
           <h2>Corpus Extraction</h2>
@@ -1567,7 +1567,7 @@ export const PROJECTS = {
               <strong>Normalization (The Ratio):</strong> The code calculates where the played note’s frequency falls within the total range (approx. 260Hz to 980Hz), converting the pitch into a normalized 0.0 to 1.0 ratio.
             </li>
             <li>
-              <strong>Linear Interpolation (The Blend):</strong> Using that ratio, the program performs linear interpolation on the RGB channels. For example, a ratio of 0.5 generates a color exactly halfway between the user's chosen start and end colors.
+              <strong>Linear Interpolation (The Blend):</strong> Using that ratio, the program performs linear interpolation on the RGB channels. For example, a ratio of 0.5 generates a color exactly halfway between the user’s chosen start and end colors.
             </li>
             <li>
               <strong>Dynamic Rendering:</strong> The calculated color is applied to the background instantly. Simultaneously, a brightness check analyzes the RGB values and automatically flips the text color (black or white) to ensure readability.
@@ -1576,5 +1576,6 @@ export const PROJECTS = {
         </>
       )
     }
-  ]
+  ],
+  research: [],
 };

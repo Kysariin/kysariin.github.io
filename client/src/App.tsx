@@ -4,22 +4,24 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 
 import Home from "@/pages/Home";
-import Systems from "@/pages/Systems";
-import Sound from "@/pages/Sound";
+import Hardware from "@/pages/Hardware";
+import Audio from "@/pages/Audio";
 import Misc from "@/pages/Misc";
 import ProjectDetail from "@/pages/ProjectDetail";
-import NotFound from "@/pages/not-found"; // Note: your file image shows 'not-found.tsx' lowercase
+import NotFound from "@/pages/not-found";
+import SubpageNav from "@/components/SubpageNav";
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <SubpageNav />
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/systems" component={Systems} />
-        <Route path="/sound" component={Sound} />
+        <Route path="/hardware" component={Hardware} />
+        <Route path="/audio" component={Audio} />
         <Route path="/misc" component={Misc} />
-        <Route path="/project/:category/:slug">
-          {(params) => <ProjectDetail category={params.category} slug={params.slug} />}
+        <Route path="/:directory/:slug">
+          {(params) => <ProjectDetail category={params.directory} slug={params.slug} />}
         </Route>
         <Route component={NotFound} />
       </Switch>

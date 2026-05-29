@@ -1,47 +1,11 @@
 import React from "react";
-import { Link, useLocation } from "wouter";
-import { cn } from "@/lib/utils";
 import { Linkedin, Instagram } from "lucide-react";
 import { FaSpotify } from "react-icons/fa";
 
-function Navigation() {
-  const [location] = useLocation();
-  const navItems = [
-    { name: "home", href: "/" },
-    { name: "systems", href: "/systems" },
-    { name: "sound", href: "/sound" },
-    { name: "misc", href: "/misc" },
-  ];
-
-  return (
-    <header className="border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-center">
-        <nav className="flex items-center gap-8">
-          {navItems.map((item) => (
-            <Link key={item.href} href={item.href}>
-              <a
-                className={cn(
-                  "text-sm md:text-base font-semibold lowercase tracking-[0.2em] transition-colors relative py-1",
-                  location === item.href 
-                    ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {item.name}
-              </a>
-            </Link>
-          ))}
-        </nav>
-      </div>
-    </header>
-  );
-}
-
 export function PageLayout({ title, children }: { title: React.ReactNode, children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background relative selection:bg-primary/20">
+    <div className="min-h-screen relative selection:bg-primary/20">
       <div className="paper-texture" />
-      <Navigation />
       <main className="container mx-auto px-4 py-32 max-w-3xl">
         <article className="space-y-12">
           <header className="space-y-4">

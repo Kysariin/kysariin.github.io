@@ -10,9 +10,9 @@ export default function ProjectDetail({ category, slug }: { category: string; sl
   const [isHeroZoomed, setIsHeroZoomed] = React.useState(false); // so you can expand the hero as well
   const [, setLocation] = useLocation();
   const categoryToProjects: Record<string, Array<any>> = {
-    systems: PROJECTS.systems,
-    sound: PROJECTS.sound,
-    // misc: PROJECTS.misc,
+    hardware: PROJECTS.hardware,
+    audio:    PROJECTS.audio,
+    research: PROJECTS.research,
   };
 
   const fromCategory = categoryToProjects[category] ?? [];
@@ -26,9 +26,9 @@ export default function ProjectDetail({ category, slug }: { category: string; sl
     return (
       <PageLayout title="project not found">
         <p className="font-mono text-[13px] text-primary/80">// status: 404_not_found</p>
-        <Link href="/systems">
+        <Link href="/hardware">
           <a className="mt-8 inline-block text-primary hover:underline font-mono text-xs tracking-widest uppercase">
-            return_to_systems
+            return_to_hardware
           </a>
         </Link>
       </PageLayout>
@@ -42,9 +42,9 @@ export default function ProjectDetail({ category, slug }: { category: string; sl
           <button
             onClick={() => {
               const fallback =
-                category === "systems" ? "/systems" :
-                category === "sound" ? "/sound" :
-                category === "misc" ? "/misc" : "/";
+                category === "hardware" ? "/hardware" :
+                category === "audio"    ? "/audio"    :
+                category === "research" ? "/research" : "/";
               if (window.history.length > 1) {
                 window.history.back();
               } else {
