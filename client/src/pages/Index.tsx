@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useSearch } from "wouter";
 import { Shell } from "@/components/Shell";
 import { Threshold } from "@/components/Threshold";
-import { ENTRIES, COUNTS, shortDate, type Entry } from "@/data/entries";
+import { ENTRIES, shortDate, type Entry } from "@/data/entries";
 import { cn } from "@/lib/utils";
 
 export default function Index() {
@@ -18,7 +18,10 @@ export default function Index() {
 
   return (
     <div>
-      <Threshold line={`${COUNTS.project} projects so far. Writing and notes to come.`} onEnter={enter} />
+      <Threshold
+        line="columbia engineering 2026, working as a full-stack developer. the showcased physical projects were for school, but i'm in the process of adding my own personal side projects to this page."
+        onEnter={enter}
+      />
 
       <div id="index">
         <Shell active={(kind as "project" | "writing" | null) ?? "all"}>
