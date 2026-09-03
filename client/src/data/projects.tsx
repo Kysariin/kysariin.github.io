@@ -1251,7 +1251,7 @@ export const PROJECTS = {
             I wanted to do something related to gothic music. I wanted to feed songs I like into an algorithm, and see what gets summoned. That's a séance.
           </p>
           <p>
-            These are bands I actually listen to. Joy Division is already in my portfolio via <a href="/hardware/disorder">(dis)order</a>. Bauhaus, The Cure, Depeche Mode, Siouxsie are all bands that my parents played for me my whole life. I wanted to know what a Markov chain trained on all of it would produce. I hoped it would make something that sounds like it comes from the same emotional world, but doesn't belong to any one artist.
+            These are bands I actually listen to. Joy Division is already in my portfolio via <a href="/work/disorder">(dis)order</a>. Bauhaus, The Cure, Depeche Mode, Siouxsie are all bands that my parents played for me my whole life. I wanted to know what a Markov chain trained on all of it would produce. I hoped it would make something that sounds like it comes from the same emotional world, but doesn't belong to any one artist.
           </p>
 
           <h2>Corpus Extraction</h2>
@@ -1488,7 +1488,7 @@ export const PROJECTS = {
     },
     {
       slug: "multi-mode-synth",
-      title: "Multi-Mode Synthesizer",
+      title: "multi-mode synthesizer",
       date: "2026-02-13",
       description: "An expansion of the polyphonic keyboard into a multi-engine synthesizer. It supports Additive, AM, and FM synthesis modes, controlled via a custom LFO system for dynamic frequency modulation.",
       tags: ["audio", "webaudio", "DSP", "synthesis"],
@@ -1545,7 +1545,7 @@ export const PROJECTS = {
     },
     {
       slug: "colorful-keyboard",
-      title: "Colorful Keyboard",
+      title: "colorful keyboard",
       date: "2026-01-30",
       description: "A polyphonic synthesizer built with JS and WebAudio, with ADSR envelopes and gain management to prevent clipping. The keyboard includes a reactive visualizer that maps audio frequencies to color gradients in real-time.",
       tags: ["audio", "webaudio", "synthesizer"],

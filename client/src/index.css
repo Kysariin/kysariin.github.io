@@ -1,141 +1,181 @@
 @import "tailwindcss";
 
-@plugin "tailwindcss-animate";
-@plugin "@tailwindcss/typography";
-
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
-  --font-sans: 'Inter', sans-serif;
-  --font-heading: 'Space Grotesk', sans-serif;
-  --font-serif: 'Source Serif 4', serif;
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', Garamond, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-jp: 'Shippori Mincho', serif;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --color-bg: #100f16;
+  --color-panel: #17161f;
+  --color-rule: #292734;
+  --color-rule-soft: #1e1c26;
 
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+  --color-ink: #e6e4ee;
+  --color-body: #c5c1d2;
+  --color-muted: #8e8aa0;
+  --color-dim: #726e85;
+  --color-dimmer: #615d73;
+  --color-label: #524f64;
+  --color-faint: #413e50;
 
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
+  --color-iris: #b3a6d8;
+  --color-iris-deep: #6f5f9c;
+  --color-moss: #a8bf9a;
 
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
+  /* aliases so the untouched project write-ups (text-primary, border-border,
+     bg-card, text-foreground) keep resolving to the right tones */
+  --color-primary: var(--color-iris);
+  --color-border: var(--color-rule);
+  --color-card: var(--color-panel);
+  --color-foreground: var(--color-ink);
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
 }
 
 @layer base {
-  :root {
-    /* Slightly lighter background for better definition */
-    --background: 240 10% 4%;
-    --foreground: 40 10% 95%; /* High contrast off-white */
-
-    --card: 240 10% 6%;
-    --card-foreground: 40 10% 95%;
-
-    --popover: 240 10% 4%;
-    --popover-foreground: 40 10% 95%;
-
-    /* Softer primary: lower saturation, slightly lighter */
-    --primary: 260 35% 78%;
-    --primary-foreground: 240 10% 3%;
-
-    --secondary: 240 5% 18%;
-    --secondary-foreground: 40 10% 95%;
-
-    --muted: 240 5% 12%;
-    --muted-foreground: 240 5% 65%; /* Lightened from 50% for readability */
-
-    --accent: 260 40% 50%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 70% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 240 10% 16%;
-    --input: 240 10% 16%;
-    --ring: 260 50% 75%;
-
-    --radius: 0px;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/40;
-    background-image: 
-      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 40%),
-      linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
-    background-size: 100% 100%, 40px 40px, 40px 40px;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif tracking-tight lowercase text-foreground;
+
+  ::selection {
+    background: rgba(179, 166, 216, 0.24);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    text-transform: lowercase;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+
+  a {
+    color: var(--color-iris);
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+  a:hover {
+    color: var(--color-ink);
   }
 }
 
 @layer components {
-  .project-content h2 {
-    @apply text-4xl md:text-5xl font-semibold leading-tight mt-12 mb-6 pb-2 border-b border-border/40;
+  .prose-site {
+    max-width: 616px;
   }
-  .project-content h3 {
-    @apply text-3xl md:text-4xl font-semibold leading-snug mt-10 mb-4;
+  .prose-site p {
+    margin: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--color-body);
   }
-  .project-content h4 {
-    @apply text-2xl md:text-3xl font-semibold leading-snug mt-8 mb-2;
+  .prose-site h2 {
+    margin: 34px 0 14px;
+    font-size: 32px;
+    line-height: 1.2;
   }
-  .project-content p {
-    @apply my-6 leading-relaxed text-foreground/90;
+  .prose-site h3 {
+    margin: 26px 0 10px;
+    font-size: 26px;
+    line-height: 1.25;
   }
-  .project-content ul {
-    @apply my-5 list-disc pl-6;
+  .prose-site h4 {
+    margin: 22px 0 8px;
+    font-size: 21px;
+    line-height: 1.3;
   }
-  .project-content li {
-    @apply my-1.5 marker:text-foreground/80;
+  .prose-site ul,
+  .prose-site ol {
+    margin: 0 0 22px;
+    padding-left: 20px;
+    color: var(--color-body);
   }
-  .project-content a {
-    @apply text-primary/90 underline decoration-primary/40 decoration-1 underline-offset-2 transition-colors;
+  .prose-site ul {
+    list-style: disc;
   }
-  .project-content a:hover {
-    @apply text-primary decoration-primary decoration-2 underline-offset-4;
+  .prose-site ol {
+    list-style: decimal;
   }
-  .project-content a:focus-visible {
-    @apply outline-none ring-2 ring-primary/40 rounded-[2px];
+  .prose-site li {
+    margin: 6px 0;
+    line-height: 1.8;
   }
-}
-
-.paper-texture {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.035;
-  z-index: 50;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-.typewriter {
-  font-family: 'IBM Plex Mono', monospace;
-  letter-spacing: -0.02em;
+  .prose-site a {
+    text-decoration: underline;
+    text-decoration-color: var(--color-iris-deep);
+    text-underline-offset: 2px;
+  }
+  .prose-site a:hover {
+    text-decoration-color: var(--color-iris);
+  }
+  .prose-site code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--color-ink);
+  }
+  .prose-site pre {
+    margin: 0 0 22px;
+    padding: 18px;
+    background: var(--color-panel);
+    border: 1px solid var(--color-rule);
+    overflow-x: auto;
+  }
+  .prose-site pre code {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .prose-site table {
+    width: 100%;
+    margin: 0 0 22px;
+    border-top: 1px solid var(--color-rule);
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .prose-site th {
+    padding: 8px 24px 8px 0;
+    text-align: left;
+    font-weight: 400;
+    color: var(--color-dim);
+    border-bottom: 1px solid var(--color-rule);
+    white-space: nowrap;
+  }
+  .prose-site td {
+    padding: 8px 24px 8px 0;
+    color: var(--color-body);
+    border-bottom: 1px solid var(--color-rule-soft);
+  }
+  .prose-site th:last-child,
+  .prose-site td:last-child {
+    padding-right: 0;
+  }
+  .prose-site blockquote {
+    margin: 0 0 22px;
+    border-left: 1px solid var(--color-moss);
+    padding: 4px 0 4px 22px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 23px;
+    line-height: 1.55;
+    color: #b8b4c8;
+  }
+  .prose-site figure {
+    margin: 8px 0 26px;
+  }
+  .prose-site figcaption {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--color-dim);
+  }
 }
